@@ -408,9 +408,10 @@ tbody td{padding:8px 10px;vertical-align:middle;}
           <div style="font-size:12px;margin-top:6px">para visualizar el mapa de bricks</div>
         </div>
         <div id="mapaTitle" style="font-size:14px;font-weight:800;color:var(--azul-d);margin-bottom:12px;display:none"></div>
-        <img id="mapaImg" src="" alt="Mapa de Bricks" style="max-width:100%;max-height:600px;border-radius:8px;display:none;box-shadow:0 2px 12px rgba(0,0,0,0.12)">
+        <img id="mapaImg" src="" alt="Mapa de Bricks" style="max-width:100%;max-height:600px;border-radius:8px;display:none;box-shadow:0 2px 12px rgba(0,0,0,0.12);cursor:zoom-in" onclick="openZoom()" title="Clic para hacer zoom">
         <div style="margin-top:10px;display:flex;gap:8px" id="mapaActions" style="display:none">
           <a id="mapaDownload" href="" download style="display:none;padding:6px 14px;background:var(--azul);color:white;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none">↓ Descargar</a>
+          <button id="mapaZoomBtn" onclick="openZoom()" style="display:none;padding:6px 14px;background:var(--azul-d);color:white;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer">🔍 Zoom</button>
         </div>
       </div>
     </div>
@@ -1024,6 +1025,8 @@ function selectCity(item,btn){
   dl.style.display='inline-block';
   dl.href=item.file;
   dl.download='Mapa_Bricks_'+item.city+'.png';
+  const zoomBtn=document.getElementById('mapaZoomBtn');
+  if(zoomBtn) zoomBtn.style.display='inline-block';
 }
 
 function clsPill(cls){
@@ -1239,6 +1242,40 @@ function showCompDetail(brickCode){
   );
 }
 
+</script>
+
+<!-- Modal Zoom Mapas -->
+<div id="zoomModal" onclick="closeZoom()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;overflow:auto">
+  <div onclick="event.stopPropagation()" style="position:sticky;top:0;background:rgba(0,0,0,0.7);padding:10px 16px;display:flex;gap:8px;justify-content:flex-end;z-index:10000">
+    <button onclick="zoomIn()" style="background:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:14px;font-weight:700;cursor:pointer">🔍 +</button>
+    <button onclick="zoomOut()" style="background:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:14px;font-weight:700;cursor:pointer">🔍 −</button>
+    <button onclick="resetZoom()" style="background:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:14px;font-weight:700;cursor:pointer">↺ Reset</button>
+    <button onclick="closeZoom()" style="background:#E1251B;color:white;border:none;border-radius:6px;padding:6px 14px;font-size:14px;font-weight:700;cursor:pointer">✕ Cerrar</button>
+  </div>
+  <div style="display:flex;justify-content:center;padding:20px">
+    <img id="zoomImg" src="" onclick="event.stopPropagation()" style="max-width:100%;border-radius:8px;transform-origin:top center;transition:transform 0.2s">
+  </div>
+</div>
+
+<script>
+let zoomLevel=1;
+function openZoom(){
+  const src=document.getElementById('mapaImg').src;
+  if(!src) return;
+  document.getElementById('zoomImg').src=src;
+  zoomLevel=1;
+  document.getElementById('zoomImg').style.transform='scale(1)';
+  document.getElementById('zoomModal').style.display='block';
+  document.body.style.overflow='hidden';
+}
+function closeZoom(){
+  document.getElementById('zoomModal').style.display='none';
+  document.body.style.overflow='';
+}
+function zoomIn(){zoomLevel=Math.min(zoomLevel+0.3,5);document.getElementById('zoomImg').style.transform='scale('+zoomLevel+')';}
+function zoomOut(){zoomLevel=Math.max(zoomLevel-0.3,0.5);document.getElementById('zoomImg').style.transform='scale('+zoomLevel+')';}
+function resetZoom(){zoomLevel=1;document.getElementById('zoomImg').style.transform='scale(1)';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeZoom();});
 </script>
 </body>
 </html>
