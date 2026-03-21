@@ -128,18 +128,6 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 .footer{text-align:center;padding:20px;color:var(--gris-d);font-size:10.5px;border-top:1px solid #E5E7EB;margin-top:32px;}
 .btn-detail{background:var(--azul-l);color:var(--azul);border:none;padding:3px 8px;border-radius:6px;cursor:pointer;font-size:10.5px;font-weight:700;white-space:nowrap;}
 .btn-detail:hover{background:var(--azul);color:white;}
-/* ── SELECTOR DE CANAL ── */
-.canal-label{font-size:10px;font-weight:700;color:var(--gris-d);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-/* ── ZOOM MAPA ── */
-.zoom-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;cursor:zoom-out;}
-.zoom-overlay.open{display:flex;}
-.zoom-container{position:relative;max-width:95vw;max-height:95vh;overflow:auto;cursor:default;}
-.zoom-img{display:block;transition:transform 0.2s;transform-origin:top left;}
-.zoom-controls{position:fixed;top:20px;right:20px;display:flex;gap:8px;z-index:2001;}
-.zoom-btn{background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;transition:background 0.2s;}
-.zoom-btn:hover{background:rgba(255,255,255,0.3);}
-.btn-zoom{background:var(--azul-l);color:var(--azul);border:1px solid var(--azul);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s;}
-.btn-zoom:hover{background:var(--azul);color:white;}
 </style>
 </head>
 <body>
@@ -153,19 +141,6 @@ tbody td{padding:8px 10px;vertical-align:middle;}
     </div>
   </div>
   <div class="header-badge">MAT DIC 2025</div>
-</div>
-
-<!-- ZOOM OVERLAY -->
-<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom(event)">
-  <div class="zoom-controls">
-    <button class="zoom-btn" onclick="event.stopPropagation();zoomIn()">🔍 +</button>
-    <button class="zoom-btn" onclick="event.stopPropagation();zoomOut()">🔍 −</button>
-    <button class="zoom-btn" onclick="event.stopPropagation();zoomReset()">↺ Reset</button>
-    <button class="zoom-btn" onclick="event.stopPropagation();closeZoom()">✕ Cerrar</button>
-  </div>
-  <div class="zoom-container" id="zoomContainer" onclick="event.stopPropagation()">
-    <img id="zoomImg" class="zoom-img" src="" alt="Mapa">
-  </div>
 </div>
 
 <div class="tabs">
@@ -183,19 +158,14 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 
 <!-- ===== RESUMEN ===== -->
 <div id="tab-resumen" class="section active">
-  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
-    <div class="section-title" style="margin-bottom:0">Resumen Ejecutivo</div>
-    <div>
-      
-</div>
-  </div>
-  <div class="insight" id="resumen-insight">
+  <div class="section-title">Resumen Ejecutivo</div>
+  <div class="insight">
     <strong>Éticos La Economía</strong> cerró el MAT Dic 2025 con ventas de <strong>$219.8B COP (+20.2% YoY)</strong>, creciendo <strong>4.3 pp por encima del mercado total</strong> (+15.9%). El Market Share avanzó de 2.55% a <strong>2.64%</strong>, ganando <strong>+0.09 pp</strong>. La red activa comprende <strong>459 droguerías</strong> en <strong>279 bricks geográficos</strong> bajo la gestión de <strong>20 coordinadores</strong>.
   </div>
-  <div class="kpi-grid" id="resumen-kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">Ventas Éticos MAT Dic 2025</div><div class="kpi-value" id="kpi-ventas">$219.8B</div><div class="kpi-sub" id="kpi-ventas-sub"><span class="badge-up">▲ +20.2%</span> vs. MAT Dic 2024</div></div>
-    <div class="kpi-card green"><div class="kpi-label" id="kpi-ms-label">Market Share vs. Mercado Total</div><div class="kpi-value" id="kpi-ms">2.64%</div><div class="kpi-sub" id="kpi-ms-sub"><span class="badge-up">▲ +0.09 pp</span> (prev. 2.55%)</div></div>
-    <div class="kpi-card"><div class="kpi-label" id="kpi-mkt-label">Mercado Total Colombia</div><div class="kpi-value" id="kpi-mkt">$12.1T</div><div class="kpi-sub" id="kpi-mkt-sub"><span class="badge-up">▲ +15.9%</span> vs. MAT Dic 2024</div></div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Ventas Éticos MAT Dic 2025</div><div class="kpi-value">$219.8B</div><div class="kpi-sub"><span class="badge-up">▲ +20.2%</span> vs. MAT Dic 2024</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Market Share vs. Mercado Total</div><div class="kpi-value">2.64%</div><div class="kpi-sub"><span class="badge-up">▲ +0.09 pp</span> (prev. 2.55%)</div></div>
+    <div class="kpi-card"><div class="kpi-label">Mercado Total Colombia</div><div class="kpi-value">$12.1T</div><div class="kpi-sub"><span class="badge-up">▲ +15.9%</span> vs. MAT Dic 2024</div></div>
     <div class="kpi-card yellow"><div class="kpi-label">Droguerías Activas</div><div class="kpi-value">459</div><div class="kpi-sub">279 bricks · 20 coordinadores</div></div>
     <div class="kpi-card red"><div class="kpi-label">Bricks Críticos</div><div class="kpi-value">138</div><div class="kpi-sub">MS bajo en mercados grandes</div></div>
     <div class="kpi-card"><div class="kpi-label">Oportunidades Altas</div><div class="kpi-value">339</div><div class="kpi-sub">Bricks sin presencia · alta relevancia</div></div>
@@ -438,9 +408,8 @@ tbody td{padding:8px 10px;vertical-align:middle;}
           <div style="font-size:12px;margin-top:6px">para visualizar el mapa de bricks</div>
         </div>
         <div id="mapaTitle" style="font-size:14px;font-weight:800;color:var(--azul-d);margin-bottom:12px;display:none"></div>
-        <img id="mapaImg" src="" alt="Mapa de Bricks" style="max-width:100%;max-height:600px;border-radius:8px;display:none;box-shadow:0 2px 12px rgba(0,0,0,0.12);cursor:zoom-in" onclick="openZoom(this.src)">
-        <div style="margin-top:10px;display:flex;gap:8px" id="mapaActions">
-          <button class="btn-zoom" id="mapaZoomBtn" style="display:none" onclick="openZoom(document.getElementById('mapaImg').src)">🔍 Zoom</button>
+        <img id="mapaImg" src="" alt="Mapa de Bricks" style="max-width:100%;max-height:600px;border-radius:8px;display:none;box-shadow:0 2px 12px rgba(0,0,0,0.12)">
+        <div style="margin-top:10px;display:flex;gap:8px" id="mapaActions" style="display:none">
           <a id="mapaDownload" href="" download style="display:none;padding:6px 14px;background:var(--azul);color:white;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none">↓ Descargar</a>
         </div>
       </div>
@@ -452,9 +421,6 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <!-- ===== COMPETIDORES ===== -->
 <div id="tab-competidores" class="section">
   <div class="section-title">⚔️ Ranking Competitivo por Brick</div>
-  <div id="comp-canal-note" style="display:none;background:#FFF7ED;border:2px solid #EA580C;border-radius:8px;padding:12px 18px;margin-bottom:16px;font-size:12.5px;color:#92400E">
-    ⚠️ El análisis de competidores solo aplica para el canal <strong>Pharmacy Chains</strong>. Cambia el selector de canal para ver este análisis.
-  </div>
   <div class="insight">
     Análisis de las <strong>15 cadenas farmacéuticas</strong> presentes en el canal Pharmacy Chains. Éticos lidera en <strong id="comp-lideres-n">...</strong> bricks, ocupa posición #2 en <strong id="comp-2nd-n">...</strong> y está en posición #3 o inferior en <strong id="comp-3rd-n">...</strong>. El principal competidor por número de bricks liderados es <strong id="comp-rival-n">...</strong>.
   </div>
@@ -1049,7 +1015,6 @@ function selectCity(item,btn){
   const title=document.getElementById('mapaTitle');
   const img=document.getElementById('mapaImg');
   const dl=document.getElementById('mapaDownload');
-  const zoomBtn=document.getElementById('mapaZoomBtn');
   placeholder.style.display='none';
   title.style.display='block';
   title.textContent=activeRegion+' — '+item.city;
@@ -1059,92 +1024,12 @@ function selectCity(item,btn){
   dl.style.display='inline-block';
   dl.href=item.file;
   dl.download='Mapa_Bricks_'+item.city+'.png';
-  zoomBtn.style.display='inline-flex';
 }
 
 function clsPill(cls){
   const m={OPORTUNIDAD_ALTA:['pill-opp-alta','Opp. Alta'],OPORTUNIDAD_MEDIA:['pill-opp-med','Opp. Media'],MANTENIMIENTO:['pill-mant','Mant.'],CRITICO:['pill-crit','Crítico'],BAJO_IMPACTO:['pill-bajo','Bajo']};
   const[c,l]=m[cls]||['pill-bajo',cls];
   return `<span class="pill ${c}">${l}</span>`;
-}
-
-// ============================================================
-// ZOOM DE MAPAS
-// ============================================================
-let currentZoom = 1;
-
-function openZoom(src){
-  const overlay = document.getElementById('zoomOverlay');
-  const img = document.getElementById('zoomImg');
-  img.src = src;
-  currentZoom = 1;
-  img.style.transform = 'scale(1)';
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeZoom(e){
-  if(e && e.target !== document.getElementById('zoomOverlay')) return;
-  document.getElementById('zoomOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function zoomIn(){
-  currentZoom = Math.min(currentZoom + 0.3, 4);
-  document.getElementById('zoomImg').style.transform = `scale(${currentZoom})`;
-}
-
-function zoomOut(){
-  currentZoom = Math.max(currentZoom - 0.3, 0.5);
-  document.getElementById('zoomImg').style.transform = `scale(${currentZoom})`;
-}
-
-function zoomReset(){
-  currentZoom = 1;
-  document.getElementById('zoomImg').style.transform = 'scale(1)';
-}
-
-// Cerrar zoom con Escape
-document.addEventListener('keydown', e=>{
-  if(e.key==='Escape') {
-    document.getElementById('zoomOverlay').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-});
-
-// ============================================================
-// SELECTOR DE CANAL — ACTUALIZA TODOS LOS TABS
-// ============================================================
-  const topMant = [...newBricks].filter(b=>b.clasificacion==='MANTENIMIENTO').sort((a,b)=>b.laeco_ms-a.laeco_ms).slice(0,30);
-  topMant.forEach((b,i)=>{
-    mantB.innerHTML += `<tr><td>${i+1}</td><td style="font-size:10px">${b.brick}</td><td>${b.city}</td><td>${b.state}</td>
-      <td>${(b.market_size/1000).toFixed(1)}K</td>
-      <td class="delta-pos">${b.laeco_ms.toFixed(1)}%</td>
-      <td class="${b.ms_delta>=0?'delta-pos':'delta-neg'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)}</td>
-      <td>${b.num_drog||0}</td>
-      <td style="font-size:10px">${b.coordinador||'Sin asignar'}</td></tr>`;
-  });
-
-  // ─ Refrescar Roadmap (tabla coordinadores) ─
-  const sorted = [...newCoords].sort((a,b)=>b.ms_pct-a.ms_pct);
-  const topB = document.getElementById('coordTopBody');
-  const botB = document.getElementById('coordBotBody');
-  topB.innerHTML = '';
-  botB.innerHTML = '';
-  sorted.slice(0,7).forEach(c=>{
-    topB.innerHTML += `<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
-      <td class="delta-pos">${c.ms_pct.toFixed(1)}%</td>
-      <td style="color:var(--verde)">${c.mantenimiento}</td><td style="color:#D97706">${c.critico}</td></tr>`;
-  });
-  sorted.slice(-7).reverse().forEach(c=>{
-    botB.innerHTML += `<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
-      <td class="delta-neg">${c.ms_pct.toFixed(1)}%</td>
-      <td style="color:var(--verde)">${c.mantenimiento}</td><td style="color:#D97706">${c.critico}</td></tr>`;
-  });
-
-  // ─ Nota en tab Competidores si no es Cadenas ─
-  const compNote = document.getElementById('comp-canal-note');
-  if(compNote) compNote.style.display = canal==='cadenas'?'none':'block';
 }
 
 // ============================================================
