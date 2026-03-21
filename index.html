@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard POSSO · Éticos La Economía · MAT Dic 2025</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+:root{--azul:#1C58B7;--azul-d:#0d3a7a;--azul-l:#E8F0FB;--rojo:#E1251B;--rojo-l:#FDECEA;--amarillo:#FFEA00;--amarillo-l:#FFFDE7;--gris:#F5F7FA;--gris-d:#6B7280;--blanco:#FFFFFF;--texto:#1A1A2E;--verde:#16A34A;--verde-l:#DCFCE7;--naranja:#EA580C;--naranja-l:#FFF7ED;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gris);color:var(--texto);font-size:14px;}
+.header{background:linear-gradient(135deg,var(--azul-d) 0%,var(--azul) 100%);border-bottom:4px solid var(--amarillo);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
+.header-logo{display:flex;align-items:center;gap:14px;}
+.header-logo img{height:40px;}
+.header-title{color:white;font-size:18px;font-weight:800;letter-spacing:0.3px;}
+.header-subtitle{color:rgba(255,255,255,0.7);font-size:11px;margin-top:2px;}
+.header-badge{background:var(--amarillo);color:var(--azul-d);font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;letter-spacing:0.5px;}
+.tabs{background:var(--blanco);border-bottom:2px solid #E5E7EB;padding:0 16px;display:flex;flex-wrap:wrap;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,0.08);}
+.tab{padding:10px 14px;cursor:pointer;font-size:11.5px;font-weight:700;color:var(--gris-d);border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap;}
+.tab:hover{color:var(--azul);background:var(--azul-l);}
+.tab.active{color:var(--azul);border-bottom-color:var(--azul);}
+.main{padding:24px 32px;max-width:1600px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:24px;}
+.kpi-card{background:var(--blanco);border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border-left:4px solid var(--azul);}
+.kpi-card.red{border-left-color:var(--rojo);}
+.kpi-card.green{border-left-color:var(--verde);}
+.kpi-card.yellow{border-left-color:#D97706;}
+.kpi-label{font-size:10.5px;font-weight:700;color:var(--gris-d);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.kpi-value{font-size:28px;font-weight:900;color:var(--azul);line-height:1;}
+.kpi-card.red .kpi-value{color:var(--rojo);}
+.kpi-card.green .kpi-value{color:var(--verde);}
+.kpi-card.yellow .kpi-value{color:#D97706;}
+.kpi-sub{font-size:11px;color:var(--gris-d);margin-top:6px;}
+.badge-up{color:var(--verde);font-weight:700;}
+.badge-down{color:var(--rojo);font-weight:700;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px;}
+@media(max-width:1100px){.grid-2,.grid-3{grid-template-columns:1fr;}}
+.card{background:var(--blanco);border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.08);}
+.card-title{font-size:13px;font-weight:800;color:var(--azul-d);margin-bottom:16px;display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:0.3px;}
+.chart-wrap{position:relative;height:280px;}
+.chart-wrap.tall{height:380px;}
+.cls-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;}
+@media(max-width:900px){.cls-grid{grid-template-columns:repeat(2,1fr);}}
+.cls-card{border-radius:12px;padding:16px;text-align:center;}
+.cls-card.opp-alta{background:var(--rojo-l);border:2px solid var(--rojo);}
+.cls-card.opp-med{background:var(--naranja-l);border:2px solid var(--naranja);}
+.cls-card.mant{background:var(--verde-l);border:2px solid var(--verde);}
+.cls-card.crit{background:var(--amarillo-l);border:2px solid #D97706;}
+.cls-card.bajo{background:var(--gris);border:2px solid #D1D5DB;}
+.cls-num{font-size:36px;font-weight:900;line-height:1;}
+.cls-label{font-size:10px;font-weight:800;text-transform:uppercase;margin-top:4px;letter-spacing:0.5px;}
+.cls-sub{font-size:10px;color:var(--gris-d);margin-top:2px;}
+.opp-alta .cls-num{color:var(--rojo);}
+.opp-med .cls-num{color:var(--naranja);}
+.mant .cls-num{color:var(--verde);}
+.crit .cls-num{color:#D97706;}
+.bajo .cls-num{color:#9CA3AF;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12px;}
+thead th{background:var(--azul);color:white;padding:9px 10px;text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;}
+tbody tr{border-bottom:1px solid #F3F4F6;transition:background 0.15s;}
+tbody tr:hover{background:var(--azul-l);}
+tbody td{padding:8px 10px;vertical-align:middle;}
+.ms-bar{display:flex;align-items:center;gap:6px;}
+.ms-bar-bg{flex:1;height:6px;background:#E5E7EB;border-radius:3px;min-width:50px;}
+.ms-bar-fill{height:100%;border-radius:3px;background:var(--azul);}
+.pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9.5px;font-weight:800;text-transform:uppercase;white-space:nowrap;}
+.pill-opp-alta{background:var(--rojo-l);color:var(--rojo);}
+.pill-opp-med{background:var(--naranja-l);color:var(--naranja);}
+.pill-mant{background:var(--verde-l);color:var(--verde);}
+.pill-crit{background:var(--amarillo-l);color:#D97706;}
+.pill-bajo{background:var(--gris);color:var(--gris-d);}
+.delta-pos{color:var(--verde);font-weight:700;}
+.delta-neg{color:var(--rojo);font-weight:700;}
+.filter-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end;}
+.filter-group{display:flex;flex-direction:column;gap:4px;}
+.filter-group label{font-size:10.5px;font-weight:700;color:var(--gris-d);text-transform:uppercase;}
+.filter-bar input,.filter-bar select{padding:7px 11px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;background:white;outline:none;}
+.filter-bar input:focus,.filter-bar select:focus{border-color:var(--azul);}
+.coord-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px;}
+.coord-card{background:var(--blanco);border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border-top:3px solid var(--azul);cursor:pointer;transition:box-shadow 0.2s,transform 0.2s;}
+.coord-card:hover{box-shadow:0 4px 16px rgba(28,88,183,0.18);transform:translateY(-2px);}
+.coord-name{font-size:13px;font-weight:800;color:var(--azul-d);margin-bottom:10px;}
+.coord-stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px;}
+.coord-stat{text-align:center;}
+.coord-stat-val{font-size:20px;font-weight:900;color:var(--azul);}
+.coord-stat-lbl{font-size:9.5px;color:var(--gris-d);text-transform:uppercase;font-weight:600;}
+.coord-ciudades{font-size:10.5px;color:var(--gris-d);line-height:1.5;}
+.coord-cls-bar{display:flex;gap:3px;margin-top:10px;height:6px;border-radius:3px;overflow:hidden;}
+.coord-cls-seg{height:100%;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:16px;padding:28px;max-width:720px;width:95%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris-d);line-height:1;}
+.modal-title{font-size:17px;font-weight:900;color:var(--azul-d);margin-bottom:16px;padding-right:32px;}
+.drog-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+.drog-item{background:var(--gris);border-radius:8px;padding:7px 12px;font-size:11.5px;display:flex;align-items:center;gap:8px;}
+.drog-dot{width:8px;height:8px;border-radius:50%;background:var(--azul);flex-shrink:0;}
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:24px;}
+@media(max-width:900px){.roadmap-grid{grid-template-columns:1fr;}}
+.roadmap-card{border-radius:12px;padding:20px;}
+.roadmap-card.r1{background:var(--rojo-l);border:2px solid var(--rojo);}
+.roadmap-card.r2{background:var(--amarillo-l);border:2px solid #D97706;}
+.roadmap-card.r3{background:var(--azul-l);border:2px solid var(--azul);}
+.roadmap-phase{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.r1 .roadmap-phase{color:var(--rojo);}
+.r2 .roadmap-phase{color:#D97706;}
+.r3 .roadmap-phase{color:var(--azul);}
+.roadmap-title{font-size:15px;font-weight:900;margin-bottom:12px;}
+.roadmap-items{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.roadmap-items li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.5;}
+.roadmap-items li::before{content:'→';position:absolute;left:0;font-weight:800;}
+.r1 .roadmap-items li::before{color:var(--rojo);}
+.r2 .roadmap-items li::before{color:#D97706;}
+.r3 .roadmap-items li::before{color:var(--azul);}
+.section-title{font-size:19px;font-weight:900;color:var(--azul-d);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.section-title::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--azul-l),transparent);}
+.insight{background:var(--azul-l);border-left:4px solid var(--azul);border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:12.5px;line-height:1.7;}
+.insight strong{color:var(--azul-d);}
+.pagination{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;}
+.pagination button{padding:5px 10px;border:1px solid #D1D5DB;border-radius:6px;background:white;cursor:pointer;font-size:11px;}
+.pagination button.active{background:var(--azul);color:white;border-color:var(--azul);}
+.pagination button:hover:not(.active){background:var(--azul-l);}
+.footer{text-align:center;padding:20px;color:var(--gris-d);font-size:10.5px;border-top:1px solid #E5E7EB;margin-top:32px;}
+.btn-detail{background:var(--azul-l);color:var(--azul);border:none;padding:3px 8px;border-radius:6px;cursor:pointer;font-size:10.5px;font-weight:700;white-space:nowrap;}
+.btn-detail:hover{background:var(--azul);color:white;}
+/* ── SELECTOR DE CANAL ── */
+.canal-label{font-size:10px;font-weight:700;color:var(--gris-d);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+/* ── ZOOM MAPA ── */
+.zoom-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:2000;align-items:center;justify-content:center;cursor:zoom-out;}
+.zoom-overlay.open{display:flex;}
+.zoom-container{position:relative;max-width:95vw;max-height:95vh;overflow:auto;cursor:default;}
+.zoom-img{display:block;transition:transform 0.2s;transform-origin:top left;}
+.zoom-controls{position:fixed;top:20px;right:20px;display:flex;gap:8px;z-index:2001;}
+.zoom-btn{background:rgba(255,255,255,0.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.3);color:white;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;transition:background 0.2s;}
+.zoom-btn:hover{background:rgba(255,255,255,0.3);}
+.btn-zoom{background:var(--azul-l);color:var(--azul);border:1px solid var(--azul);padding:6px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;transition:all 0.2s;}
+.btn-zoom:hover{background:var(--azul);color:white;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <img src="logo-top.png" alt="Éticos La Economía" onerror="this.style.display='none'">
+    <div>
+      <div class="header-title">Dashboard POSSO · Market Intelligence</div>
+      <div class="header-subtitle">Análisis Estratégico de Participación de Mercado · Éticos La Economía</div>
+    </div>
+  </div>
+  <div class="header-badge">MAT DIC 2025</div>
+</div>
+
+<!-- ZOOM OVERLAY -->
+<div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom(event)">
+  <div class="zoom-controls">
+    <button class="zoom-btn" onclick="event.stopPropagation();zoomIn()">🔍 +</button>
+    <button class="zoom-btn" onclick="event.stopPropagation();zoomOut()">🔍 −</button>
+    <button class="zoom-btn" onclick="event.stopPropagation();zoomReset()">↺ Reset</button>
+    <button class="zoom-btn" onclick="event.stopPropagation();closeZoom()">✕ Cerrar</button>
+  </div>
+  <div class="zoom-container" id="zoomContainer" onclick="event.stopPropagation()">
+    <img id="zoomImg" class="zoom-img" src="" alt="Mapa">
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab('resumen',this)">📊 Resumen</div>
+  <div class="tab" onclick="showTab('bricks',this)">🗺️ Bricks</div>
+  <div class="tab" onclick="showTab('coordinadores',this)">👥 Coordinadores</div>
+  <div class="tab" onclick="showTab('oportunidades',this)">🎯 Oportunidades</div>
+  <div class="tab" onclick="showTab('roadmap',this)">🚀 Roadmap</div>
+  <div class="tab" onclick="showTab('posicionamiento',this)">📈 Posicionamiento</div>
+  <div class="tab" onclick="showTab('mapa',this)">🗺️ Mapas</div>
+  <div class="tab" onclick="showTab('competidores',this)">⚔️ Competidores</div>
+</div>
+
+<div class="main">
+
+<!-- ===== RESUMEN ===== -->
+<div id="tab-resumen" class="section active">
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:16px">
+    <div class="section-title" style="margin-bottom:0">Resumen Ejecutivo</div>
+    <div>
+      <div class="canal-label">Vista por Canal</div>
+</div>
+  </div>
+  <div class="insight" id="resumen-insight">
+    <strong>Éticos La Economía</strong> cerró el MAT Dic 2025 con ventas de <strong>$219.8B COP (+20.2% YoY)</strong>, creciendo <strong>4.3 pp por encima del mercado total</strong> (+15.9%). El Market Share avanzó de 2.55% a <strong>2.64%</strong>, ganando <strong>+0.09 pp</strong>. La red activa comprende <strong>459 droguerías</strong> en <strong>279 bricks geográficos</strong> bajo la gestión de <strong>20 coordinadores</strong>.
+  </div>
+  <div class="kpi-grid" id="resumen-kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">Ventas Éticos MAT Dic 2025</div><div class="kpi-value" id="kpi-ventas">$219.8B</div><div class="kpi-sub" id="kpi-ventas-sub"><span class="badge-up">▲ +20.2%</span> vs. MAT Dic 2024</div></div>
+    <div class="kpi-card green"><div class="kpi-label" id="kpi-ms-label">Market Share vs. Mercado Total</div><div class="kpi-value" id="kpi-ms">2.64%</div><div class="kpi-sub" id="kpi-ms-sub"><span class="badge-up">▲ +0.09 pp</span> (prev. 2.55%)</div></div>
+    <div class="kpi-card"><div class="kpi-label" id="kpi-mkt-label">Mercado Total Colombia</div><div class="kpi-value" id="kpi-mkt">$12.1T</div><div class="kpi-sub" id="kpi-mkt-sub"><span class="badge-up">▲ +15.9%</span> vs. MAT Dic 2024</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">Droguerías Activas</div><div class="kpi-value">459</div><div class="kpi-sub">279 bricks · 20 coordinadores</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Bricks Críticos</div><div class="kpi-value">138</div><div class="kpi-sub">MS bajo en mercados grandes</div></div>
+    <div class="kpi-card"><div class="kpi-label">Oportunidades Altas</div><div class="kpi-value">339</div><div class="kpi-sub">Bricks sin presencia · alta relevancia</div></div>
+  </div>
+  <div class="cls-grid">
+    <div class="cls-card opp-alta"><div class="cls-num">339</div><div class="cls-label">Oportunidad Alta</div><div class="cls-sub">Sin presencia · mercado grande</div></div>
+    <div class="cls-card opp-med"><div class="cls-num">429</div><div class="cls-label">Oportunidad Media</div><div class="cls-sub">Sin presencia · mercado mediano</div></div>
+    <div class="cls-card mant"><div class="cls-num">138</div><div class="cls-label">Mantenimiento</div><div class="cls-sub">MS sólido · defender posición</div></div>
+    <div class="cls-card crit"><div class="cls-num">138</div><div class="cls-label">Críticos</div><div class="cls-sub">MS bajo · mercado grande</div></div>
+    <div class="cls-card bajo"><div class="cls-num">1,016</div><div class="cls-label">Bajo Impacto</div><div class="cls-sub">Mercados pequeños</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">📈 Crecimiento YoY: Éticos vs. Mercado</div><div class="chart-wrap"><canvas id="chartGrowth"></canvas></div></div>
+    <div class="card"><div class="card-title">🏆 Top 10 Coordinadores por Market Share</div><div class="chart-wrap"><canvas id="chartCoordTop"></canvas></div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">🗺️ Top 10 Departamentos por Ventas Éticos</div><div class="chart-wrap"><canvas id="chartRegion"></canvas></div></div>
+    <div class="card"><div class="card-title">🎯 Distribución de Bricks por Clasificación</div><div class="chart-wrap"><canvas id="chartCls"></canvas></div></div>
+  </div>
+</div>
+
+<!-- ===== BRICKS ===== -->
+<div id="tab-bricks" class="section">
+  <div class="section-title">Análisis por Bricks</div>
+  <div class="filter-bar">
+    <div class="filter-group"><label>Buscar brick / ciudad</label><input type="text" id="filterText" placeholder="Ej: Barranquilla..." oninput="renderBricks()"></div>
+    <div class="filter-group"><label>Clasificación</label>
+      <select id="filterCls" onchange="renderBricks()">
+        <option value="">Todas</option>
+        <option value="OPORTUNIDAD_ALTA">Oportunidad Alta</option>
+        <option value="OPORTUNIDAD_MEDIA">Oportunidad Media</option>
+        <option value="MANTENIMIENTO">Mantenimiento</option>
+        <option value="CRITICO">Crítico</option>
+        <option value="BAJO_IMPACTO">Bajo Impacto</option>
+      </select>
+    </div>
+    <div class="filter-group"><label>Departamento</label><select id="filterState" onchange="renderBricks()"><option value="">Todos</option></select></div>
+    <div class="filter-group"><label>Coordinador</label><select id="filterCoord" onchange="renderBricks()"><option value="">Todos</option></select></div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Brick</th><th>Ciudad</th><th>Depto.</th><th>Coordinador</th><th>Supervisor</th>
+          <th>Droguerías</th><th>Mercado</th><th>MS %</th><th>MS Prev</th><th>Δ MS</th>
+          <th>Crec. Mdo.</th><th>Clasificación</th>
+        </tr></thead>
+        <tbody id="bricksBody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="bricksPag"></div>
+  </div>
+</div>
+
+<!-- ===== COORDINADORES ===== -->
+<div id="tab-coordinadores" class="section">
+  <div class="section-title">Desempeño por Coordinador</div>
+  <div class="insight">
+    Red de <strong>20 coordinadores</strong> gestionando 459 droguerías activas en 279 bricks. Mayor MS: <strong>John Piña (29.5%)</strong> y <strong>Alfredo Barrios (25.0%)</strong>. Mayor oportunidad de mejora: <strong>Luis Torres (0.6%)</strong> y <strong>Willer Larios (2.0%)</strong>.
+  </div>
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-title">📊 MS por Coordinador vs. Promedio Nacional (2.64%)</div>
+    <div class="chart-wrap tall"><canvas id="chartCoordAll"></canvas></div>
+  </div>
+  <div class="coord-grid" id="coordGrid"></div>
+</div>
+
+<!-- ===== OPORTUNIDADES ===== -->
+<div id="tab-oportunidades" class="section">
+  <div class="section-title">Mapa de Oportunidades</div>
+  <div class="insight">
+    <strong>339 bricks de Oportunidad Alta</strong> con potencial acumulado de 5.4M PRECIS sin presencia Éticos. <strong>138 bricks Críticos</strong> con presencia actual pero MS inferior al umbral P50 (10.84%) representan el mayor riesgo de pérdida de participación.
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🔴 Top 20 Bricks — Oportunidad Alta</div>
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>Brick</th><th>Ciudad</th><th>Depto.</th><th>Mercado</th><th>Coord. Zona</th></tr></thead><tbody id="oppBody"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ Top 20 Bricks — Críticos</div>
+      <div class="table-wrap"><table><thead><tr><th>#</th><th>Brick</th><th>Ciudad</th><th>Mercado</th><th>MS %</th><th>Δ MS</th><th>Coordinador</th></tr></thead><tbody id="critBody"></tbody></table></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">✅ Top 20 Bricks — Mantenimiento (MS sólido)</div>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>Brick</th><th>Ciudad</th><th>Depto.</th><th>Mercado</th><th>MS %</th><th>Δ MS</th><th>Drog.</th><th>Coordinador</th></tr></thead><tbody id="mantBody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ===== ROADMAP ===== -->
+<div id="tab-roadmap" class="section">
+  <div class="section-title">Roadmap Estratégico</div>
+  <div class="insight">
+    Basado en la Matriz de Crecimiento–Participación aplicada a los 2,060 bricks analizados. Foco inmediato en los <strong>138 bricks Críticos</strong> donde Éticos tiene presencia pero pierde participación frente al crecimiento del mercado.
+  </div>
+  <div class="roadmap-grid">
+    <div class="roadmap-card r1">
+      <div class="roadmap-phase">⚡ Inmediato · 0–3 meses</div>
+      <div class="roadmap-title">Recuperación de Bricks Críticos</div>
+      <ul class="roadmap-items">
+        <li>Activar plan de choque en los 20 bricks críticos de mayor tamaño de mercado</li>
+        <li>Reforzar ejecución en punto de venta: exhibición, surtido y precio en bricks con MS &lt; 5%</li>
+        <li>Asignar metas específicas de MS por coordinador en bricks críticos de su zona</li>
+        <li>Revisar cobertura en Cúcuta, Bucaramanga y Bogotá donde el MS está por debajo del umbral</li>
+        <li>Activar incentivos comerciales diferenciados para droguerías en bricks críticos</li>
+      </ul>
+    </div>
+    <div class="roadmap-card r2">
+      <div class="roadmap-phase">📅 Corto Plazo · 3–6 meses</div>
+      <div class="roadmap-title">Consolidación y Expansión Selectiva</div>
+      <ul class="roadmap-items">
+        <li>Evaluar apertura de nuevos puntos en los 20 bricks de Oportunidad Alta prioritarios</li>
+        <li>Consolidar MS en bricks de Mantenimiento: defender posición frente a competidores</li>
+        <li>Fortalecer coordinadores con MS &lt; 5% con acompañamiento comercial intensivo</li>
+        <li>Implementar seguimiento semanal de MS por brick para coordinadores con bricks críticos</li>
+        <li>Desarrollar plan de fidelización en bricks de Mantenimiento con MS &gt; 25%</li>
+      </ul>
+    </div>
+    <div class="roadmap-card r3">
+      <div class="roadmap-phase">🎯 Mediano Plazo · 6–12 meses</div>
+      <div class="roadmap-title">Expansión Estratégica de Red</div>
+      <ul class="roadmap-items">
+        <li>Expansión en los 339 bricks de Oportunidad Alta con mayor potencial de mercado</li>
+        <li>Priorizar ciudades intermedias donde el mercado crece &gt; 15% sin presencia Éticos</li>
+        <li>Desarrollar modelo de alianza para bricks de difícil acceso directo</li>
+        <li>Establecer meta de MS nacional del 3.0% para MAT Dic 2026 (+0.36 pp)</li>
+        <li>Implementar dashboard de seguimiento mensual por coordinador con alertas automáticas</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">🏆 Coordinadores con Mayor MS — Replicar Modelo</div>
+      <div class="table-wrap"><table><thead><tr><th>Coordinador</th><th>Drog.</th><th>Bricks</th><th>MS %</th><th>Mant.</th><th>Crít.</th></tr></thead><tbody id="coordTopBody"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title">⚠️ Coordinadores con Menor MS — Plan de Mejora</div>
+      <div class="table-wrap"><table><thead><tr><th>Coordinador</th><th>Drog.</th><th>Bricks</th><th>MS %</th><th>Mant.</th><th>Crít.</th></tr></thead><tbody id="coordBotBody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== POSICIONAMIENTO ===== -->
+<div id="tab-posicionamiento" class="section">
+  <div class="section-title">Posicionamiento de Droguerías en su Brick</div>
+  <div class="insight">
+    Análisis de las <strong>368 droguerías</strong> con presencia en <strong>ambos períodos</strong> (MAT Dic 2024 y MAT Dic 2025). Se mide la variación de participación de cada droguерía dentro de su brick específico. <strong style="color:var(--verde)">197 ganaron posición (53.5%)</strong> y <strong style="color:var(--rojo)">169 perdieron posición (45.9%)</strong>. El Δ MS promedio fue de <strong>+0.39 pp</strong>, confirmando avance neto de la red.
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid" style="grid-template-columns:repeat(6,1fr)">
+    <div class="kpi-card"><div class="kpi-label">Drog. Analizadas</div><div class="kpi-value" id="rKpiTotal">—</div><div class="kpi-sub">Presentes en ambos períodos</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Ganaron Posición</div><div class="kpi-value" id="rKpiGan">—</div><div class="kpi-sub">Δ MS &gt; 0.01 pp en su brick</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Perdieron Posición</div><div class="kpi-value" id="rKpiPer">—</div><div class="kpi-sub">Δ MS &lt; -0.01 pp en su brick</div></div>
+    <div class="kpi-card"><div class="kpi-label">Δ MS Promedio</div><div class="kpi-value" id="rKpiDelta">—</div><div class="kpi-sub">Variación media de la red</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Mayor Ganancia</div><div class="kpi-value" id="rKpiMax">—</div><div class="kpi-sub">Máx. ganancia en un brick</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Mayor Pérdida</div><div class="kpi-value" id="rKpiMin">—</div><div class="kpi-sub">Máx. caída en un brick</div></div>
+  </div>
+
+  <!-- Resumen por coordinador -->
+  <div class="card" style="margin-bottom:20px">
+    <div class="card-title">👥 Resumen por Coordinador — Ganadores vs. Perdedores</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Coordinador</th><th style="text-align:center">Total</th>
+          <th style="text-align:center;color:#86EFAC">Ganadores</th>
+          <th style="text-align:center;color:#FCA5A5">Perdedores</th>
+          <th style="text-align:center">Estables</th>
+          <th style="min-width:140px">% Ganadores</th>
+          <th>Δ MS Prom.</th>
+          <th>Crec. Ventas</th>
+        </tr></thead>
+        <tbody id="coordRankBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Filtros y tabla detalle -->
+  <div class="card">
+    <div class="card-title">🔍 Detalle por Droguерía</div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;gap:0;border:2px solid var(--azul);border-radius:8px;overflow:hidden">
+        <button class="rv-btn active" onclick="switchRView('ganadores',this)" style="padding:7px 16px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:var(--azul);color:white">&#9650; Ganadores</button>
+        <button class="rv-btn" onclick="switchRView('perdedores',this)" style="padding:7px 16px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:white;color:var(--rojo)">&#9660; Perdedores</button>
+        <button class="rv-btn" onclick="switchRView('todos',this)" style="padding:7px 16px;font-size:12px;font-weight:700;border:none;cursor:pointer;background:white;color:var(--gris-d)">Todos</button>
+      </div>
+      <input id="rSearch" type="text" placeholder="Buscar droguерía, brick o ciudad..." oninput="filterRanking()" style="padding:7px 12px;border:1.5px solid #D1D5DB;border-radius:8px;font-size:12px;min-width:220px">
+      <select id="rCoord" onchange="filterRanking()" style="padding:7px 10px;border:1.5px solid #D1D5DB;border-radius:8px;font-size:12px">
+        <option value="">Todos los coordinadores</option>
+      </select>
+      <select id="rState" onchange="filterRanking()" style="padding:7px 10px;border:1.5px solid #D1D5DB;border-radius:8px;font-size:12px">
+        <option value="">Todos los departamentos</option>
+      </select>
+      <span id="rCount" style="font-size:11px;color:var(--gris-d);font-weight:700"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Droguерía</th><th>Brick</th><th>Ciudad</th>
+          <th>Coordinador</th><th>Supervisor</th>
+          <th style="text-align:right">MS 2024</th>
+          <th style="text-align:right">MS 2025</th>
+          <th style="text-align:right">Δ MS</th>
+          <th style="min-width:80px">Magnitud</th>
+          <th style="text-align:right">Crec. Ventas</th>
+          <th style="text-align:right">Ventas 2025</th>
+        </tr></thead>
+        <tbody id="rankingBody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="rankingPag" style="display:flex;gap:6px;margin-top:14px;flex-wrap:wrap;align-items:center"></div>
+  </div>
+</div>
+
+<!-- ===== MAPAS BRICKS ===== -->
+<div id="tab-mapa" class="section">
+  <div class="section-title">Mapas de Bricks IQVIA por Ciudad</div>
+  <div class="insight">
+    Referencia geográfica oficial de los bricks IQVIA. Selecciona la <strong>región</strong> y luego la <strong>ciudad</strong> para visualizar el mapa de delimitación de bricks. Disponibles <strong>70 ciudades</strong> en <strong>7 regiones</strong>.
+  </div>
+
+  <div style="display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap">
+    <!-- Panel de navegación -->
+    <div style="min-width:200px;max-width:220px">
+      <div style="font-size:11px;font-weight:800;color:var(--azul-d);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Región</div>
+      <div id="regionList" style="display:flex;flex-direction:column;gap:4px"></div>
+    </div>
+    <!-- Panel de ciudades -->
+    <div style="min-width:180px;max-width:200px">
+      <div style="font-size:11px;font-weight:800;color:var(--azul-d);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Ciudad</div>
+      <div id="cityList" style="display:flex;flex-direction:column;gap:4px;max-height:500px;overflow-y:auto"></div>
+    </div>
+    <!-- Visor del mapa -->
+    <div style="flex:1;min-width:400px">
+      <div id="mapaViewer" style="background:var(--blanco);border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,0.08);padding:16px;min-height:500px;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div id="mapaPlaceholder" style="text-align:center;color:var(--gris-d)">
+          <div style="font-size:48px;margin-bottom:12px">🗺️</div>
+          <div style="font-size:14px;font-weight:700">Selecciona una región y ciudad</div>
+          <div style="font-size:12px;margin-top:6px">para visualizar el mapa de bricks</div>
+        </div>
+        <div id="mapaTitle" style="font-size:14px;font-weight:800;color:var(--azul-d);margin-bottom:12px;display:none"></div>
+        <img id="mapaImg" src="" alt="Mapa de Bricks" style="max-width:100%;max-height:600px;border-radius:8px;display:none;box-shadow:0 2px 12px rgba(0,0,0,0.12);cursor:zoom-in" onclick="openZoom(this.src)">
+        <div style="margin-top:10px;display:flex;gap:8px" id="mapaActions">
+          <button class="btn-zoom" id="mapaZoomBtn" style="display:none" onclick="openZoom(document.getElementById('mapaImg').src)">🔍 Zoom</button>
+          <a id="mapaDownload" href="" download style="display:none;padding:6px 14px;background:var(--azul);color:white;border-radius:6px;font-size:11px;font-weight:700;text-decoration:none">↓ Descargar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== COMPETIDORES ===== -->
+<div id="tab-competidores" class="section">
+  <div class="section-title">⚔️ Ranking Competitivo por Brick</div>
+  <div id="comp-canal-note" style="display:none;background:#FFF7ED;border:2px solid #EA580C;border-radius:8px;padding:12px 18px;margin-bottom:16px;font-size:12.5px;color:#92400E">
+    ⚠️ El análisis de competidores solo aplica para el canal <strong>Pharmacy Chains</strong>. Cambia el selector de canal para ver este análisis.
+  </div>
+  <div class="insight">
+    Análisis de las <strong>15 cadenas farmacéuticas</strong> presentes en el canal Pharmacy Chains. Éticos lidera en <strong id="comp-lideres-n">...</strong> bricks, ocupa posición #2 en <strong id="comp-2nd-n">...</strong> y está en posición #3 o inferior en <strong id="comp-3rd-n">...</strong>. El principal competidor por número de bricks liderados es <strong id="comp-rival-n">...</strong>.
+  </div>
+
+  <!-- KPIs de posición -->
+  <div class="kpi-grid" id="comp-kpi-grid" style="grid-template-columns:repeat(6,1fr);"></div>
+
+  <!-- Gráfica de liderazgo por cadena -->
+  <div class="grid-2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-title">🏆 Bricks Liderados por Cadena</div>
+      <div class="chart-wrap"><canvas id="chartLideres"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📊 Market Share Total por Cadena (Pharmacy Chains)</div>
+      <div class="chart-wrap"><canvas id="chartMSCadenas"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filter-bar">
+    <div class="filter-group"><label>Buscar Brick / Ciudad</label><input type="text" id="compSearch" placeholder="Ej: Barranquilla, 1101..." oninput="filterComp()"></div>
+    <div class="filter-group"><label>Posición Éticos</label>
+      <select id="compPosFilter" onchange="filterComp()">
+        <option value="">Todas</option>
+        <option value="1">#1 Líder</option>
+        <option value="2">#2 Segundo</option>
+        <option value="3">#3 Tercero</option>
+        <option value="4+">#4 o inferior</option>
+        <option value="0">Sin presencia</option>
+      </select>
+    </div>
+    <div class="filter-group"><label>Líder del Brick</label>
+      <select id="compLiderFilter" onchange="filterComp()">
+        <option value="">Todas las cadenas</option>
+      </select>
+    </div>
+    <div class="filter-group"><label>Departamento</label>
+      <select id="compStateFilter" onchange="filterComp()">
+        <option value="">Todos</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabla de ranking -->
+  <div class="card">
+    <div class="card-title">Ranking de Cadenas por Brick <span id="comp-count" style="font-size:11px;font-weight:400;color:var(--gris-d)"></span></div>
+    <div class="table-wrap">
+      <table id="compTable">
+        <thead>
+          <tr>
+            <th>Brick</th>
+            <th>Ciudad</th>
+            <th>Depto</th>
+            <th>Mercado (PRECIS)</th>
+            <th>Pos. Éticos</th>
+            <th>MS Éticos</th>
+            <th>#1 Líder</th>
+            <th>MS Líder</th>
+            <th>#2</th>
+            <th>#3</th>
+            <th>Cadenas</th>
+            <th>Detalle</th>
+          </tr>
+        </thead>
+        <tbody id="compTbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="compPag"></div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle"></div>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="footer">Dashboard POSSO · Éticos La Economía · MAT Diciembre 2025 · Fuente: IQVIA POSSO · Confidencial</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let DATA = {
+  coordinadores:[],top_oportunidades:[],top_criticos:[],top_mantenimiento:[],bricks:[],
+  meta:{la_economia:{ms_pct:2.64,ms_prev_pct:2.55,ms_delta:0.09,yoy_growth:20.2,outlets:459},total_market_growth:15.9},
+  clasificacion_summary:{OPORTUNIDAD_ALTA:{count:339},OPORTUNIDAD_MEDIA:{count:429},MANTENIMIENTO:{count:138},CRITICO:{count:138},BAJO_IMPACTO:{count:1016}},
+  regions:[
+    {dept:'Atlántico',values_m:38813.3},{dept:'Bolívar',values_m:35199.1},{dept:'Cesar',values_m:24989.2},
+    {dept:'Magdalena',values_m:23980.5},{dept:'Valle del Cauca',values_m:20297.6},{dept:'Córdoba',values_m:19233.3},
+    {dept:'Sucre',values_m:11074.3},{dept:'Santander',values_m:11057.4},{dept:'La Guajira',values_m:9503.2},{dept:'Bogotá',values_m:8910.5}
+  ]
+};
+let bPage=1, bPerPage=25, bFiltered=[];
+let COMP_DATA=null, compPage=1, compPerPage=30, compFiltered=[], compChartsBuilt=false;
+
+fetch('dashboard_data_v3.json').then(r=>r.json()).then(d=>{
+  DATA={...DATA,...d};
+  if(d.meta) DATA.meta=d.meta;
+  init();
+}).catch(()=>init());
+
+// ============================================================
+// INIT
+// ============================================================
+function init(){
+  buildCharts();
+  buildCoordGrid();
+  buildOppTables();
+  buildRoadmapTables();
+  populateFilters();
+  bFiltered=[...DATA.bricks];
+  renderBricks();
+}
+
+// ============================================================
+// TABS
+// ============================================================
+function showTab(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+  if(id==='posicionamiento') loadRanking();
+  if(id==='mapa') loadMapa();
+  if(id==='competidores') loadCompetidores();
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function buildCharts(){
+  const la=DATA.meta.la_economia;
+  const mktGrowth=DATA.meta.total_market_growth||15.9;
+
+  // Growth bar
+  new Chart(document.getElementById('chartGrowth'),{
+    type:'bar',
+    data:{labels:['Mercado Total','Éticos La Economía'],
+      datasets:[{label:'Crecimiento YoY %',data:[mktGrowth,la.yoy_growth],
+        backgroundColor:['#9CA3AF','#1C58B7'],borderRadius:10}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},datalabels:{color:'white',font:{weight:'bold',size:15},formatter:v=>v.toFixed(1)+'%'}},
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}}}},
+    plugins:[ChartDataLabels]
+  });
+
+  // Top 10 coordinadores
+  const top10=[...DATA.coordinadores].sort((a,b)=>b.ms_pct-a.ms_pct).slice(0,10);
+  new Chart(document.getElementById('chartCoordTop'),{
+    type:'bar',
+    data:{labels:top10.map(c=>c.coordinador.split(' ').slice(0,2).join(' ')),
+      datasets:[{data:top10.map(c=>c.ms_pct),
+        backgroundColor:top10.map(c=>c.ms_pct>=10?'#1C58B7':c.ms_pct>=5?'#D97706':'#E1251B'),
+        borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},datalabels:{color:'white',font:{weight:'bold',size:10},formatter:v=>v.toFixed(1)+'%',anchor:'center',align:'center'}},
+      scales:{x:{beginAtZero:true,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},y:{ticks:{font:{size:10}}}}},
+    plugins:[ChartDataLabels]
+  });
+
+  // Regiones
+  new Chart(document.getElementById('chartRegion'),{
+    type:'bar',
+    data:{labels:DATA.regions.map(r=>r.dept),
+      datasets:[{data:DATA.regions.map(r=>r.values_m),backgroundColor:'#1C58B7',borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},datalabels:{color:'white',font:{weight:'bold',size:9},formatter:v=>(v/1000).toFixed(1)+'B',anchor:'center',align:'center'}},
+      scales:{x:{beginAtZero:true,grid:{color:'#F3F4F6'}},y:{ticks:{font:{size:10}}}}},
+    plugins:[ChartDataLabels]
+  });
+
+  // Clasificación donut
+  const cls=DATA.clasificacion_summary;
+  new Chart(document.getElementById('chartCls'),{
+    type:'doughnut',
+    data:{labels:['Opp. Alta','Opp. Media','Mantenimiento','Críticos','Bajo Impacto'],
+      datasets:[{data:[cls.OPORTUNIDAD_ALTA.count,cls.OPORTUNIDAD_MEDIA.count,cls.MANTENIMIENTO.count,cls.CRITICO.count,cls.BAJO_IMPACTO.count],
+        backgroundColor:['#E1251B','#EA580C','#16A34A','#D97706','#9CA3AF'],borderWidth:2,borderColor:'white'}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12}},
+        datalabels:{color:'white',font:{weight:'bold',size:11},formatter:v=>v}}},
+    plugins:[ChartDataLabels]
+  });
+
+  // Todos los coordinadores
+  const allC=[...DATA.coordinadores].sort((a,b)=>b.ms_pct-a.ms_pct);
+  new Chart(document.getElementById('chartCoordAll'),{
+    type:'bar',
+    data:{labels:allC.map(c=>c.coordinador),
+      datasets:[
+        {label:'MS % Coordinador',data:allC.map(c=>c.ms_pct),
+          backgroundColor:allC.map(c=>c.ms_pct>=(la.ms_pct||2.64)?'#1C58B7':'#E1251B'),borderRadius:6},
+        {label:'MS Nacional (2.64%)',data:allC.map(()=>la.ms_pct||2.64),type:'line',
+          borderColor:'#FFEA00',borderWidth:2.5,borderDash:[6,3],pointRadius:0,fill:false,
+          datalabels:{display:false}}
+      ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top'},
+        datalabels:{color:'white',font:{weight:'bold',size:9},formatter:(v,ctx)=>ctx.datasetIndex===0&&v>0?v.toFixed(1)+'%':'',anchor:'center',align:'center'}},
+      scales:{y:{beginAtZero:true,ticks:{callback:v=>v+'%'},grid:{color:'#F3F4F6'}},
+        x:{ticks:{font:{size:9},maxRotation:45}}}},
+    plugins:[ChartDataLabels]
+  });
+}
+
+// ============================================================
+// COORDINADORES GRID
+// ============================================================
+function buildCoordGrid(){
+  const grid=document.getElementById('coordGrid');
+  DATA.coordinadores.forEach(c=>{
+    const tot=c.mantenimiento+c.critico+c.opp_alta||1;
+    const mPct=c.mantenimiento/tot*100, crPct=c.critico/tot*100, oPct=c.opp_alta/tot*100;
+    const msColor=c.ms_pct>=10?'var(--azul)':c.ms_pct>=5?'#D97706':'var(--rojo)';
+    grid.innerHTML+=`<div class="coord-card" onclick="openCoordModal('${c.coordinador.replace(/'/g,"\\'")}')">
+      <div class="coord-name">${c.coordinador}</div>
+      <div class="coord-stats">
+        <div class="coord-stat"><div class="coord-stat-val" style="color:${msColor}">${c.ms_pct.toFixed(1)}%</div><div class="coord-stat-lbl">MS</div></div>
+        <div class="coord-stat"><div class="coord-stat-val">${c.num_drog}</div><div class="coord-stat-lbl">Drog.</div></div>
+        <div class="coord-stat"><div class="coord-stat-val">${c.num_bricks}</div><div class="coord-stat-lbl">Bricks</div></div>
+        <div class="coord-stat"><div class="coord-stat-val" style="color:var(--verde)">${c.mantenimiento}</div><div class="coord-stat-lbl">Mant.</div></div>
+        <div class="coord-stat"><div class="coord-stat-val" style="color:#D97706">${c.critico}</div><div class="coord-stat-lbl">Crít.</div></div>
+      </div>
+      <div class="coord-ciudades">${c.ciudades}</div>
+      <div class="coord-cls-bar">
+        <div class="coord-cls-seg" style="flex:${mPct||0};background:var(--verde);min-width:${mPct>0?4:0}px"></div>
+        <div class="coord-cls-seg" style="flex:${crPct||0};background:#D97706;min-width:${crPct>0?4:0}px"></div>
+        <div class="coord-cls-seg" style="flex:${oPct||0};background:var(--rojo);min-width:${oPct>0?4:0}px"></div>
+        <div class="coord-cls-seg" style="flex:${100-mPct-crPct-oPct||0};background:#E5E7EB"></div>
+      </div>
+    </div>`;
+  });
+}
+
+function openCoordModal(name){
+  const c=DATA.coordinadores.find(x=>x.coordinador===name);
+  if(!c) return;
+  const bricks=DATA.bricks.filter(b=>b.coordinador&&b.coordinador.includes(name));
+  document.getElementById('modalTitle').textContent=name;
+  let html=`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">
+    <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:var(--azul)">${c.ms_pct.toFixed(1)}%</div><div style="font-size:10px;color:var(--gris-d)">Market Share</div></div>
+    <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:var(--azul)">${c.num_drog}</div><div style="font-size:10px;color:var(--gris-d)">Droguerías</div></div>
+    <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:var(--verde)">${c.mantenimiento}</div><div style="font-size:10px;color:var(--gris-d)">Mantenimiento</div></div>
+    <div style="text-align:center"><div style="font-size:24px;font-weight:900;color:#D97706">${c.critico}</div><div style="font-size:10px;color:var(--gris-d)">Críticos</div></div>
+  </div>
+  <p style="font-size:11px;color:var(--gris-d);margin-bottom:12px"><strong>Ciudades:</strong> ${c.ciudades}</p>
+  <div style="font-size:12px;font-weight:800;margin-bottom:8px;color:var(--azul-d)">BRICKS ASIGNADOS (${bricks.length})</div>
+  <div class="table-wrap"><table><thead><tr><th>Brick</th><th>Ciudad</th><th>MS %</th><th>Δ MS</th><th>Clasificación</th><th>Drog.</th></tr></thead><tbody>`;
+  bricks.forEach(b=>{
+    html+=`<tr><td style="font-size:10px">${b.brick}</td><td>${b.city}</td>
+      <td><div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(b.laeco_ms,100)}%"></div></div>${b.laeco_ms.toFixed(1)}%</div></td>
+      <td class="${b.ms_delta>=0?'delta-pos':'delta-neg'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)}</td>
+      <td>${clsPill(b.clasificacion)}</td>
+      <td>${b.num_drog||0}</td></tr>`;
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+// ============================================================
+// OPP TABLES
+// ============================================================
+function buildOppTables(){
+  const oppB=document.getElementById('oppBody');
+  DATA.top_oportunidades.forEach((b,i)=>{
+    oppB.innerHTML+=`<tr><td>${i+1}</td><td style="font-size:10px">${b.brick}</td><td>${b.city}</td><td>${b.state}</td>
+      <td>${(b.market_size/1000).toFixed(1)}K</td><td style="font-size:10px">${b.coordinador||'Sin asignar'}</td></tr>`;
+  });
+  const critB=document.getElementById('critBody');
+  DATA.top_criticos.forEach((b,i)=>{
+    critB.innerHTML+=`<tr><td>${i+1}</td><td style="font-size:10px">${b.brick}</td><td>${b.city}</td>
+      <td>${(b.market_size/1000).toFixed(1)}K</td>
+      <td class="${b.laeco_ms<5?'delta-neg':''}">${b.laeco_ms.toFixed(1)}%</td>
+      <td class="${b.ms_delta>=0?'delta-pos':'delta-neg'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)}</td>
+      <td style="font-size:10px">${b.coordinador||'Sin asignar'}</td></tr>`;
+  });
+  const mantB=document.getElementById('mantBody');
+  DATA.top_mantenimiento.forEach((b,i)=>{
+    mantB.innerHTML+=`<tr><td>${i+1}</td><td style="font-size:10px">${b.brick}</td><td>${b.city}</td><td>${b.state}</td>
+      <td>${(b.market_size/1000).toFixed(1)}K</td>
+      <td class="delta-pos">${b.laeco_ms.toFixed(1)}%</td>
+      <td class="${b.ms_delta>=0?'delta-pos':'delta-neg'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)}</td>
+      <td>${b.num_drog||0}</td>
+      <td style="font-size:10px">${b.coordinador||'Sin asignar'}</td></tr>`;
+  });
+}
+
+// ============================================================
+// ROADMAP TABLES
+// ============================================================
+function buildRoadmapTables(){
+  const sorted=[...DATA.coordinadores].sort((a,b)=>b.ms_pct-a.ms_pct);
+  const topB=document.getElementById('coordTopBody');
+  sorted.slice(0,7).forEach(c=>{
+    topB.innerHTML+=`<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
+      <td class="delta-pos">${c.ms_pct.toFixed(1)}%</td>
+      <td style="color:var(--verde)">${c.mantenimiento}</td><td style="color:#D97706">${c.critico}</td></tr>`;
+  });
+  const botB=document.getElementById('coordBotBody');
+  sorted.slice(-7).reverse().forEach(c=>{
+    botB.innerHTML+=`<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
+      <td class="delta-neg">${c.ms_pct.toFixed(1)}%</td>
+      <td style="color:var(--verde)">${c.mantenimiento}</td><td style="color:#D97706">${c.critico}</td></tr>`;
+  });
+}
+
+// ============================================================
+// BRICKS TABLE
+// ============================================================
+function populateFilters(){
+  const states=[...new Set(DATA.bricks.map(b=>b.state))].sort();
+  const stSel=document.getElementById('filterState');
+  states.forEach(s=>{stSel.innerHTML+=`<option value="${s}">${s}</option>`;});
+  const coords=[...new Set(DATA.bricks.map(b=>b.coordinador).filter(Boolean))].sort();
+  const coSel=document.getElementById('filterCoord');
+  coords.forEach(c=>{coSel.innerHTML+=`<option value="${c}">${c}</option>`;});
+}
+
+function renderBricks(){
+  const text=document.getElementById('filterText').value.toLowerCase();
+  const cls=document.getElementById('filterCls').value;
+  const state=document.getElementById('filterState').value;
+  const coord=document.getElementById('filterCoord').value;
+  bFiltered=DATA.bricks.filter(b=>{
+    if(text&&!b.brick.toLowerCase().includes(text)&&!b.city.toLowerCase().includes(text)) return false;
+    if(cls&&b.clasificacion!==cls) return false;
+    if(state&&b.state!==state) return false;
+    if(coord&&(!b.coordinador||!b.coordinador.includes(coord))) return false;
+    return true;
+  });
+  bPage=1;
+  renderBricksPage();
+}
+
+function renderBricksPage(){
+  const start=(bPage-1)*bPerPage;
+  const page=bFiltered.slice(start,start+bPerPage);
+  const tbody=document.getElementById('bricksBody');
+  tbody.innerHTML='';
+  page.forEach(b=>{
+    const hasD=b.droguerias&&b.droguerias.length>0;
+    const dBtn=hasD?`<button class="btn-detail" onclick="openBrickModal('${b.brick.replace(/'/g,"\\'")}')">Ver ${b.num_drog}</button>`:`<span style="color:var(--gris-d)">—</span>`;
+    tbody.innerHTML+=`<tr>
+      <td style="font-size:10.5px;max-width:160px">${b.brick}</td>
+      <td>${b.city}</td><td>${b.state}</td>
+      <td style="font-size:10.5px">${b.coordinador||'—'}</td>
+      <td style="font-size:10.5px">${b.supervisor||'—'}</td>
+      <td>${dBtn}</td>
+      <td>${(b.market_size/1000).toFixed(1)}K</td>
+      <td><div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(b.laeco_ms,100)}%"></div></div><strong>${b.laeco_ms.toFixed(1)}%</strong></div></td>
+      <td>${b.laeco_ms_prev.toFixed(1)}%</td>
+      <td class="${b.ms_delta>=0?'delta-pos':'delta-neg'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)}</td>
+      <td class="${b.market_growth>=0?'delta-pos':'delta-neg'}">${b.market_growth>=0?'+':''}${b.market_growth.toFixed(1)}%</td>
+      <td>${clsPill(b.clasificacion)}</td>
+    </tr>`;
+  });
+  const totalPages=Math.ceil(bFiltered.length/bPerPage);
+  const pag=document.getElementById('bricksPag');
+  pag.innerHTML=`<span style="font-size:11px;color:var(--gris-d)">${bFiltered.length} bricks</span>`;
+  for(let i=1;i<=Math.min(totalPages,12);i++){
+    pag.innerHTML+=`<button class="${i===bPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  if(totalPages>12) pag.innerHTML+=`<span style="font-size:11px">... ${totalPages}</span>`;
+}
+
+function goPage(p){bPage=p;renderBricksPage();}
+
+function openBrickModal(brickName){
+  const b=DATA.bricks.find(x=>x.brick===brickName);
+  if(!b) return;
+  document.getElementById('modalTitle').textContent=brickName;
+  let html=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+    <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:var(--azul)">${b.laeco_ms.toFixed(1)}%</div><div style="font-size:10px;color:var(--gris-d)">Market Share</div></div>
+    <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:${b.ms_delta>=0?'var(--verde)':'var(--rojo)'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)} pp</div><div style="font-size:10px;color:var(--gris-d)">Δ MS YoY</div></div>
+    <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:var(--azul)">${b.num_drog||0}</div><div style="font-size:10px;color:var(--gris-d)">Droguerías</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;font-size:12px">
+    <div><strong>Coordinador:</strong> ${b.coordinador||'Sin asignar'}</div>
+    <div><strong>Supervisor:</strong> ${b.supervisor||'Sin asignar'}</div>
+    <div><strong>Ciudad:</strong> ${b.city}</div>
+    <div><strong>Departamento:</strong> ${b.state}</div>
+    <div><strong>Mercado:</strong> ${(b.market_size/1000).toFixed(1)}K PRECIS</div>
+    <div><strong>Clasificación:</strong> ${clsPill(b.clasificacion)}</div>
+  </div>`;
+  if(b.droguerias&&b.droguerias.length>0){
+    html+=`<div style="font-size:12px;font-weight:800;margin-bottom:8px;color:var(--azul-d)">DROGUERÍAS EN ESTE BRICK (${b.droguerias.length})</div><div class="drog-list">`;
+    b.droguerias.forEach(d=>{html+=`<div class="drog-item"><div class="drog-dot"></div>${d}</div>`;});
+    html+='</div>';
+  }
+  document.getElementById('modalContent').innerHTML=html;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+
+// ── POSICIONAMIENTO ────────────────────────────────────────────────────────
+let RANKING=null;
+let rFiltered=[];
+let rPage=1;
+const rPerPage=25;
+let rView='ganadores';
+
+function loadRanking(){
+  if(RANKING) return;
+  fetch('ranking_data.json').then(r=>r.json()).then(data=>{
+    RANKING=data;
+    renderRankingSummary();
+    // Poblar filtros
+    const coords=[...new Set(data.droguerias.map(d=>d.coordinador).filter(Boolean))].sort();
+    const states=[...new Set(data.droguerias.map(d=>d.state).filter(Boolean))].sort();
+    const cSel=document.getElementById('rCoord');
+    coords.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cSel.appendChild(o);});
+    const sSel=document.getElementById('rState');
+    states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sSel.appendChild(o);});
+    filterRanking();
+  });
+}
+
+function renderRankingSummary(){
+  const s=RANKING.summary;
+  document.getElementById('rKpiTotal').textContent=s.total_drog_analizadas;
+  document.getElementById('rKpiGan').textContent=s.ganadores+' ('+s.pct_ganadores+'%)';
+  document.getElementById('rKpiPer').textContent=s.perdedores+' ('+s.pct_perdedores+'%)';
+  document.getElementById('rKpiDelta').textContent=(s.delta_ms_promedio>=0?'+':'')+s.delta_ms_promedio.toFixed(3)+' pp';
+  document.getElementById('rKpiMax').textContent='+'+s.max_ganancia.toFixed(2)+' pp';
+  document.getElementById('rKpiMin').textContent=s.max_perdida.toFixed(2)+' pp';
+  // Coord summary table
+  let html='';
+  RANKING.coord_summary.forEach(c=>{
+    const pct=c.total>0?Math.round(c.ganadores/c.total*100):0;
+    html+=`<tr>
+      <td style="font-weight:700">${c.coordinador||'Sin asignar'}</td>
+      <td style="text-align:center">${c.total}</td>
+      <td style="text-align:center;color:var(--verde);font-weight:700">${c.ganadores}</td>
+      <td style="text-align:center;color:var(--rojo);font-weight:700">${c.perdedores}</td>
+      <td style="text-align:center">${c.estables}</td>
+      <td style="text-align:center">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="flex:1;height:8px;background:#E5E7EB;border-radius:4px;min-width:60px">
+            <div style="width:${pct}%;height:100%;background:var(--verde);border-radius:4px"></div>
+          </div>
+          <span style="font-size:10px;font-weight:700">${pct}%</span>
+        </div>
+      </td>
+      <td class="${c.delta_ms_avg>=0?'delta-pos':'delta-neg'}">${c.delta_ms_avg>=0?'+':''}${c.delta_ms_avg.toFixed(3)} pp</td>
+      <td class="${c.crec_ventas>=0?'delta-pos':'delta-neg'}">${c.crec_ventas>=0?'+':''}${c.crec_ventas.toFixed(1)}%</td>
+    </tr>`;
+  });
+  document.getElementById('coordRankBody').innerHTML=html;
+}
+
+function switchRView(v,el){
+  rView=v;
+  document.querySelectorAll('.rv-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  filterRanking();
+}
+
+function filterRanking(){
+  if(!RANKING) return;
+  const text=(document.getElementById('rSearch')||{}).value?.toLowerCase()||'';
+  const coord=(document.getElementById('rCoord')||{}).value||'';
+  const state=(document.getElementById('rState')||{}).value||'';
+  rFiltered=RANKING.droguerias.filter(d=>{
+    if(rView==='ganadores'&&d.tendencia!=='GANADOR') return false;
+    if(rView==='perdedores'&&d.tendencia!=='PERDEDOR') return false;
+    if(text&&!d.nombre.toLowerCase().includes(text)&&!d.brick.toLowerCase().includes(text)&&!d.city.toLowerCase().includes(text)) return false;
+    if(coord&&d.coordinador!==coord) return false;
+    if(state&&d.state!==state) return false;
+    return true;
+  });
+  if(rView==='ganadores') rFiltered.sort((a,b)=>b.delta_ms-a.delta_ms);
+  else if(rView==='perdedores') rFiltered.sort((a,b)=>a.delta_ms-b.delta_ms);
+  rPage=1;
+  renderRankingPage();
+  document.getElementById('rCount').textContent=rFiltered.length+' droguerías';
+}
+
+function renderRankingPage(){
+  const start=(rPage-1)*rPerPage;
+  const page=rFiltered.slice(start,start+rPerPage);
+  const tbody=document.getElementById('rankingBody');
+  tbody.innerHTML='';
+  page.forEach(d=>{
+    const isGan=d.tendencia==='GANADOR';
+    const arrow=isGan?'▲':'▼';
+    const arrowCls=isGan?'delta-pos':'delta-neg';
+    const maxDelta=rView==='perdedores'?Math.abs(rFiltered[0]?.delta_ms||1):rFiltered[0]?.delta_ms||1;
+    const barW=Math.min(Math.abs(d.delta_ms)/Math.max(maxDelta,0.01)*100,100);
+    const barColor=isGan?'var(--verde)':'var(--rojo)';
+    tbody.innerHTML+=`<tr>
+      <td style="font-size:10.5px;max-width:180px;font-weight:600">${d.nombre}</td>
+      <td style="font-size:10px">${d.brick}</td>
+      <td style="font-size:10px">${d.city}</td>
+      <td style="font-size:10px">${d.coordinador||'—'}</td>
+      <td style="font-size:10px">${d.supervisor||'—'}</td>
+      <td style="text-align:right">${d.ms_24.toFixed(2)}%</td>
+      <td style="text-align:right">${d.ms_25.toFixed(2)}%</td>
+      <td class="${arrowCls}" style="text-align:right;white-space:nowrap">${arrow} ${Math.abs(d.delta_ms).toFixed(2)} pp</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:4px">
+          <div style="width:70px;height:6px;background:#E5E7EB;border-radius:3px">
+            <div style="width:${barW}%;height:100%;background:${barColor};border-radius:3px"></div>
+          </div>
+        </div>
+      </td>
+      <td class="${d.crec_ventas_pct>=0?'delta-pos':'delta-neg'}" style="text-align:right">${d.crec_ventas_pct>=0?'+':''}${d.crec_ventas_pct.toFixed(1)}%</td>
+      <td style="text-align:right;font-size:10px">${(d.ventas_25/1e6).toFixed(1)}M</td>
+    </tr>`;
+  });
+  const totalPages=Math.ceil(rFiltered.length/rPerPage);
+  const pag=document.getElementById('rankingPag');
+  pag.innerHTML='';
+  for(let i=1;i<=Math.min(totalPages,10);i++){
+    pag.innerHTML+=`<button class="${i===rPage?'active':''}" onclick="rGoPage(${i})">${i}</button>`;
+  }
+  if(totalPages>10) pag.innerHTML+=`<span style="font-size:11px"> ... ${totalPages} págs</span>`;
+}
+function rGoPage(p){rPage=p;renderRankingPage();}
+
+// ── MAPAS BRICKS ────────────────────────────────────────────────────────
+let MAPAS_DATA=null;
+let activeRegion=null;
+
+function loadMapa(){
+  if(MAPAS_DATA) return;
+  fetch('mapas_data.json').then(r=>r.json()).then(data=>{
+    MAPAS_DATA=data;
+    const regionList=document.getElementById('regionList');
+    regionList.innerHTML='';
+    Object.keys(data).forEach((region,i)=>{
+      const btn=document.createElement('button');
+      btn.textContent=region+' ('+data[region].length+')';
+      btn.style.cssText='padding:8px 12px;border:1.5px solid #E5E7EB;border-radius:8px;background:white;cursor:pointer;font-size:12px;font-weight:600;text-align:left;transition:all 0.15s;color:var(--texto)';
+      btn.onmouseover=()=>{if(!btn.classList.contains('active-region'))btn.style.background='var(--azul-l)';};
+      btn.onmouseout=()=>{if(!btn.classList.contains('active-region'))btn.style.background='white';};
+      btn.onclick=()=>selectRegion(region,btn);
+      btn.id='rbtn-'+i;
+      regionList.appendChild(btn);
+      // Auto-seleccionar primera región
+      if(i===0) setTimeout(()=>selectRegion(region,btn),100);
+    });
+  });
+}
+
+function selectRegion(region,btn){
+  activeRegion=region;
+  document.querySelectorAll('#regionList button').forEach(b=>{
+    b.classList.remove('active-region');
+    b.style.background='white';
+    b.style.borderColor='#E5E7EB';
+    b.style.color='var(--texto)';
+  });
+  btn.classList.add('active-region');
+  btn.style.background='var(--azul)';
+  btn.style.borderColor='var(--azul)';
+  btn.style.color='white';
+  const cityList=document.getElementById('cityList');
+  cityList.innerHTML='';
+  MAPAS_DATA[region].forEach((item,i)=>{
+    const btn2=document.createElement('button');
+    btn2.textContent=item.city;
+    btn2.style.cssText='padding:7px 12px;border:1.5px solid #E5E7EB;border-radius:6px;background:white;cursor:pointer;font-size:11.5px;font-weight:600;text-align:left;transition:all 0.15s;color:var(--texto)';
+    btn2.onmouseover=()=>{if(!btn2.classList.contains('active-city'))btn2.style.background='var(--azul-l)';};
+    btn2.onmouseout=()=>{if(!btn2.classList.contains('active-city'))btn2.style.background='white';};
+    btn2.onclick=()=>selectCity(item,btn2);
+    cityList.appendChild(btn2);
+    if(i===0) setTimeout(()=>selectCity(item,btn2),150);
+  });
+}
+
+function selectCity(item,btn){
+  document.querySelectorAll('#cityList button').forEach(b=>{
+    b.classList.remove('active-city');
+    b.style.background='white';
+    b.style.borderColor='#E5E7EB';
+    b.style.color='var(--texto)';
+  });
+  btn.classList.add('active-city');
+  btn.style.background='var(--azul)';
+  btn.style.borderColor='var(--azul)';
+  btn.style.color='white';
+  const placeholder=document.getElementById('mapaPlaceholder');
+  const title=document.getElementById('mapaTitle');
+  const img=document.getElementById('mapaImg');
+  const dl=document.getElementById('mapaDownload');
+  const zoomBtn=document.getElementById('mapaZoomBtn');
+  placeholder.style.display='none';
+  title.style.display='block';
+  title.textContent=activeRegion+' — '+item.city;
+  img.style.display='block';
+  img.src=item.file;
+  img.alt='Mapa Bricks '+item.city;
+  dl.style.display='inline-block';
+  dl.href=item.file;
+  dl.download='Mapa_Bricks_'+item.city+'.png';
+  zoomBtn.style.display='inline-flex';
+}
+
+function clsPill(cls){
+  const m={OPORTUNIDAD_ALTA:['pill-opp-alta','Opp. Alta'],OPORTUNIDAD_MEDIA:['pill-opp-med','Opp. Media'],MANTENIMIENTO:['pill-mant','Mant.'],CRITICO:['pill-crit','Crítico'],BAJO_IMPACTO:['pill-bajo','Bajo']};
+  const[c,l]=m[cls]||['pill-bajo',cls];
+  return `<span class="pill ${c}">${l}</span>`;
+}
+
+// ============================================================
+// ZOOM DE MAPAS
+// ============================================================
+let currentZoom = 1;
+
+function openZoom(src){
+  const overlay = document.getElementById('zoomOverlay');
+  const img = document.getElementById('zoomImg');
+  img.src = src;
+  currentZoom = 1;
+  img.style.transform = 'scale(1)';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeZoom(e){
+  if(e && e.target !== document.getElementById('zoomOverlay')) return;
+  document.getElementById('zoomOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function zoomIn(){
+  currentZoom = Math.min(currentZoom + 0.3, 4);
+  document.getElementById('zoomImg').style.transform = `scale(${currentZoom})`;
+}
+
+function zoomOut(){
+  currentZoom = Math.max(currentZoom - 0.3, 0.5);
+  document.getElementById('zoomImg').style.transform = `scale(${currentZoom})`;
+}
+
+function zoomReset(){
+  currentZoom = 1;
+  document.getElementById('zoomImg').style.transform = 'scale(1)';
+}
+
+// Cerrar zoom con Escape
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') {
+    document.getElementById('zoomOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+// ============================================================
+// SELECTOR DE CANAL — ACTUALIZA TODOS LOS TABS
+// ============================================================
+  const topMant = [...newBricks].filter(b=>b.clasificacion==='MANTENIMIENTO').sort((a,b)=>b.laeco_ms-a.laeco_ms).slice(0,30);
+  topMant.forEach((b,i)=>{
+    mantB.innerHTML += `<tr><td>${i+1}</td><td style="font-size:10px">${b.brick}</td><td>${b.city}</td><td>${b.state}</td>
+      <td>${(b.market_size/1000).toFixed(1)}K</td>
+      <td class="delta-pos">${b.laeco_ms.toFixed(1)}%</td>
+      <td class="${b.ms_delta>=0?'delta-pos':'delta-neg'}">${b.ms_delta>=0?'+':''}${b.ms_delta.toFixed(2)}</td>
+      <td>${b.num_drog||0}</td>
+      <td style="font-size:10px">${b.coordinador||'Sin asignar'}</td></tr>`;
+  });
+
+  // ─ Refrescar Roadmap (tabla coordinadores) ─
+  const sorted = [...newCoords].sort((a,b)=>b.ms_pct-a.ms_pct);
+  const topB = document.getElementById('coordTopBody');
+  const botB = document.getElementById('coordBotBody');
+  topB.innerHTML = '';
+  botB.innerHTML = '';
+  sorted.slice(0,7).forEach(c=>{
+    topB.innerHTML += `<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
+      <td class="delta-pos">${c.ms_pct.toFixed(1)}%</td>
+      <td style="color:var(--verde)">${c.mantenimiento}</td><td style="color:#D97706">${c.critico}</td></tr>`;
+  });
+  sorted.slice(-7).reverse().forEach(c=>{
+    botB.innerHTML += `<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
+      <td class="delta-neg">${c.ms_pct.toFixed(1)}%</td>
+      <td style="color:var(--verde)">${c.mantenimiento}</td><td style="color:#D97706">${c.critico}</td></tr>`;
+  });
+
+  // ─ Nota en tab Competidores si no es Cadenas ─
+  const compNote = document.getElementById('comp-canal-note');
+  if(compNote) compNote.style.display = canal==='cadenas'?'none':'block';
+}
+
+// ============================================================
+// COMPETIDORES
+// ============================================================
+const CADENA_COLORS = {
+  'La Economía':    '#1C58B7',
+  'Cruz Verde':     '#16A34A',
+  'Farmatodo':      '#E1251B',
+  'La Rebaja':      '#EA580C',
+  'Alemana':        '#7C3AED',
+  'La Garantía':    '#0891B2',
+  'Colsubsidio':    '#DB2777',
+  'Cafam':          '#D97706',
+  'Olímpica':       '#059669',
+  'Farmanorte':     '#6366F1',
+  'Farmaya':        '#F59E0B',
+  'Comfandi':       '#10B981',
+  'Locatel':        '#8B5CF6',
+  'Drogas La Rebaja':'#EF4444',
+  'Otra Cadena':    '#9CA3AF',
+  'Otros':          '#D1D5DB',
+};
+
+function posLabel(r){
+  if(!r) return '<span style="color:var(--gris-d)">—</span>';
+  const colors=['','var(--verde)','var(--azul)','var(--naranja)','var(--rojo)'];
+  const c = r<=4 ? colors[r] : 'var(--rojo)';
+  const medal = r===1?'🥇 ':r===2?'🥈 ':r===3?'🥉 ':'';
+  return `<span style="font-weight:800;color:${c}">${medal}#${r}</span>`;
+}
+
+function loadCompetidores(){
+  if(COMP_DATA){
+    if(!compChartsBuilt) buildCompCharts();
+    return;
+  }
+  fetch('competidores_data.json').then(r=>r.json()).then(d=>{
+    COMP_DATA = d;
+    compFiltered = [...d.bricks];
+    buildCompKPIs();
+    buildCompCharts();
+    populateCompFilters();
+    renderCompTable();
+  }).catch(e=>console.error('Error cargando competidores:',e));
+}
+
+function buildCompKPIs(){
+  const d = COMP_DATA;
+  const pos = d.posicion_eticos || {};
+  const p1 = pos['#1']||0, p2=pos['#2']||0, p3=pos['#3']||0, p4=pos['#4']||0, p5=pos['#5']||0;
+  const p6plus = Object.entries(pos).filter(([k])=>k>='#6').reduce((s,[,v])=>s+v,0);
+  const sinPresencia = d.total_bricks - d.bricks_con_eticos;
+
+  // Actualizar insight
+  const rival = Object.entries(d.lideres_por_cadena||{}).filter(([k])=>k!=='La Economía').sort((a,b)=>b[1]-a[1])[0];
+  document.getElementById('comp-lideres-n').textContent = p1 + ' bricks';
+  document.getElementById('comp-2nd-n').textContent = p2 + ' bricks';
+  document.getElementById('comp-3rd-n').textContent = (p3+p4+p5+p6plus) + ' bricks';
+  document.getElementById('comp-rival-n').textContent = rival ? `${rival[0]} (${rival[1]} bricks)` : '...';
+
+  const grid = document.getElementById('comp-kpi-grid');
+  grid.innerHTML = `
+    <div class="kpi-card green"><div class="kpi-label">🥇 Líder (#1)</div><div class="kpi-value" style="color:var(--verde)">${p1}</div><div class="kpi-sub">bricks donde Éticos lidera</div></div>
+    <div class="kpi-card"><div class="kpi-label">🥈 Segundo (#2)</div><div class="kpi-value">${p2}</div><div class="kpi-sub">bricks en 2° posición</div></div>
+    <div class="kpi-card"><div class="kpi-label">🥉 Tercero (#3)</div><div class="kpi-value">${p3}</div><div class="kpi-sub">bricks en 3° posición</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">#4 – #5</div><div class="kpi-value" style="color:#D97706">${p4+p5}</div><div class="kpi-sub">bricks rezagados</div></div>
+    <div class="kpi-card red"><div class="kpi-label">#6 o inferior</div><div class="kpi-value" style="color:var(--rojo)">${p6plus}</div><div class="kpi-sub">bricks críticos</div></div>
+    <div class="kpi-card"><div class="kpi-label">Sin Presencia</div><div class="kpi-value" style="color:var(--gris-d)">${sinPresencia}</div><div class="kpi-sub">bricks sin Éticos</div></div>
+  `;
+}
+
+function buildCompCharts(){
+  if(compChartsBuilt) return;
+  compChartsBuilt = true;
+  const d = COMP_DATA;
+
+  // Chart 1: Bricks liderados por cadena
+  const lideres = Object.entries(d.lideres_por_cadena||{}).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  const lColors = lideres.map(([k])=>CADENA_COLORS[k]||'#9CA3AF');
+  new Chart(document.getElementById('chartLideres'),{
+    type:'bar',
+    data:{labels:lideres.map(([k])=>k), datasets:[{data:lideres.map(([,v])=>v), backgroundColor:lColors, borderRadius:6}]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}, datalabels:{color:'white',font:{weight:'bold',size:11},formatter:v=>v}},
+      scales:{x:{grid:{color:'#F3F4F6'}}, y:{grid:{display:false}}}
+    }
+  });
+
+  // Chart 2: MS total por cadena
+  const cadenaMS = {};
+  d.bricks.forEach(b=>{
+    b.ranking.forEach(r=>{
+      cadenaMS[r.cadena] = (cadenaMS[r.cadena]||0) + r.precis;
+    });
+  });
+  const msEntries = Object.entries(cadenaMS).sort((a,b)=>b[1]-a[1]).slice(0,12);
+  const total = msEntries.reduce((s,[,v])=>s+v,0);
+  new Chart(document.getElementById('chartMSCadenas'),{
+    type:'doughnut',
+    data:{labels:msEntries.map(([k])=>k), datasets:[{data:msEntries.map(([,v])=>(v/total*100).toFixed(1)), backgroundColor:msEntries.map(([k])=>CADENA_COLORS[k]||'#9CA3AF')}]},
+    options:{responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12}},
+        datalabels:{color:'white',font:{weight:'bold',size:10},formatter:(v,ctx)=>v>3?v+'%':''}}
+    }
+  });
+}
+
+function populateCompFilters(){
+  if(!COMP_DATA) return;
+  // Lideres
+  const lideres = [...new Set(COMP_DATA.bricks.map(b=>b.lider))].sort();
+  const lSel = document.getElementById('compLiderFilter');
+  lideres.forEach(l=>{ const o=document.createElement('option'); o.value=l; o.textContent=l; lSel.appendChild(o); });
+  // Departamentos
+  const states = [...new Set(COMP_DATA.bricks.map(b=>b.state))].sort();
+  const sSel = document.getElementById('compStateFilter');
+  states.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; sSel.appendChild(o); });
+}
+
+function filterComp(){
+  if(!COMP_DATA) return;
+  const search = document.getElementById('compSearch').value.toLowerCase();
+  const posF   = document.getElementById('compPosFilter').value;
+  const liderF = document.getElementById('compLiderFilter').value;
+  const stateF = document.getElementById('compStateFilter').value;
+
+  compFiltered = COMP_DATA.bricks.filter(b=>{
+    if(search && !b.brick.toLowerCase().includes(search) && !b.city.toLowerCase().includes(search)) return false;
+    if(stateF && b.state !== stateF) return false;
+    if(liderF && b.lider !== liderF) return false;
+    if(posF){
+      if(posF==='0' && b.eticos_rank !== null) return false;
+      if(posF==='0' && b.eticos_rank === null) return true;
+      if(posF==='4+' && (b.eticos_rank===null || b.eticos_rank < 4)) return false;
+      if(posF!=='4+' && posF!=='0' && b.eticos_rank !== parseInt(posF)) return false;
+    }
+    return true;
+  });
+  compPage = 1;
+  renderCompTable();
+}
+
+function renderCompTable(){
+  if(!COMP_DATA) return;
+  const tbody = document.getElementById('compTbody');
+  const start = (compPage-1)*compPerPage;
+  const page  = compFiltered.slice(start, start+compPerPage);
+  document.getElementById('comp-count').textContent = `(${compFiltered.length} bricks)`;
+
+  tbody.innerHTML = page.map(b=>{
+    const r2 = b.ranking[1];
+    const r3 = b.ranking[2];
+    const posCell = posLabel(b.eticos_rank);
+    const msCell  = b.eticos_rank ? `<div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(b.eticos_ms,100)}%;background:#1C58B7"></div></div><span>${b.eticos_ms.toFixed(1)}%</span></div>` : '<span style="color:var(--gris-d)">—</span>';
+    const liderColor = CADENA_COLORS[b.lider]||'#9CA3AF';
+    return `<tr>
+      <td style="font-size:10px;color:var(--gris-d)">${b.brick_code}</td>
+      <td style="font-weight:700">${b.city}</td>
+      <td style="font-size:11px">${b.state}</td>
+      <td style="font-size:11px">${(b.total_precis/1000).toFixed(0)}K</td>
+      <td style="text-align:center">${posCell}</td>
+      <td>${msCell}</td>
+      <td><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:10.5px;font-weight:700;background:${liderColor}22;color:${liderColor}">${b.lider}</span></td>
+      <td style="font-size:11px">${b.lider_ms.toFixed(1)}%</td>
+      <td style="font-size:11px;color:var(--gris-d)">${r2?r2.cadena:'—'}</td>
+      <td style="font-size:11px;color:var(--gris-d)">${r3?r3.cadena:'—'}</td>
+      <td style="text-align:center">${b.n_cadenas}</td>
+      <td><button class="btn-detail" onclick="showCompDetail(${b.brick_code})">Ver</button></td>
+    </tr>`;
+  }).join('');
+
+  // Paginación
+  const totalPages = Math.ceil(compFiltered.length/compPerPage);
+  const pag = document.getElementById('compPag');
+  pag.innerHTML = '';
+  if(totalPages<=1) return;
+  const addBtn=(label,page,active)=>{ const b=document.createElement('button'); b.textContent=label; if(active)b.classList.add('active'); b.onclick=()=>{compPage=page;renderCompTable();}; pag.appendChild(b); };
+  if(compPage>1) addBtn('←',compPage-1,false);
+  for(let i=Math.max(1,compPage-2);i<=Math.min(totalPages,compPage+2);i++) addBtn(i,i,i===compPage);
+  if(compPage<totalPages) addBtn('→',compPage+1,false);
+}
+
+function showCompDetail(brickCode){
+  if(!COMP_DATA) return;
+  const b = COMP_DATA.bricks.find(x=>x.brick_code===brickCode);
+  if(!b) return;
+  const rows = b.ranking.map((r,i)=>{
+    const isEticos = r.cadena==='La Economía';
+    const color = CADENA_COLORS[r.cadena]||'#9CA3AF';
+    const bg = isEticos ? 'background:var(--azul-l);font-weight:800;' : '';
+    return `<tr style="${bg}">
+      <td style="text-align:center;font-weight:800">${posLabel(r.rank)}</td>
+      <td><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;background:${color}22;color:${color}">${r.cadena}</span></td>
+      <td style="font-size:11px">${(r.precis/1000).toFixed(1)}K</td>
+      <td><div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(r.ms_pct,100)}%;background:${color}"></div></div><span style="font-size:11px">${r.ms_pct.toFixed(1)}%</span></div></td>
+    </tr>`;
+  }).join('');
+
+  openModal(
+    `⚔️ ${b.city} — Brick ${b.brick_code}`,
+    `<div style="margin-bottom:12px;font-size:12px;color:var(--gris-d)">${b.state} · ${b.region} · Mercado: ${(b.total_precis/1000).toFixed(0)}K PRECIS · ${b.n_cadenas} cadenas presentes</div>
+    <table style="width:100%">
+      <thead><tr><th>Pos.</th><th>Cadena</th><th>PRECIS</th><th>Market Share</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`
+  );
+}
+
+</script>
+</body>
+</html>

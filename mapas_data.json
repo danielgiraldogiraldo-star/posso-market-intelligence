@@ -1,0 +1,296 @@
+{
+  "Antioquia": [
+    {
+      "city": "Bello",
+      "file": "mapas/Antioquia_Bello.png"
+    },
+    {
+      "city": "Caucasia",
+      "file": "mapas/Antioquia_Caucasia.png"
+    },
+    {
+      "city": "Envigado",
+      "file": "mapas/Antioquia_Envigado.png"
+    },
+    {
+      "city": "Itagüí",
+      "file": "mapas/Antioquia_Itagui.png"
+    },
+    {
+      "city": "Medellín",
+      "file": "mapas/Antioquia_Medellin.png"
+    },
+    {
+      "city": "Quibdó",
+      "file": "mapas/Antioquia_Quibdo.png"
+    },
+    {
+      "city": "Rionegro",
+      "file": "mapas/Antioquia_Rionegro.png"
+    },
+    {
+      "city": "Turbo",
+      "file": "mapas/Antioquia_Turbo.png"
+    }
+  ],
+  "Costa": [
+    {
+      "city": "Aguachica",
+      "file": "mapas/Costa_Aguachica.png"
+    },
+    {
+      "city": "Barranquilla",
+      "file": "mapas/Costa_Barranquilla.png"
+    },
+    {
+      "city": "Cartagena",
+      "file": "mapas/Costa_Cartagena.png"
+    },
+    {
+      "city": "Lorica",
+      "file": "mapas/Costa_Lorica.png"
+    },
+    {
+      "city": "Maicao",
+      "file": "mapas/Costa_Maicao.png"
+    },
+    {
+      "city": "Malambo",
+      "file": "mapas/Costa_Malambo.png"
+    },
+    {
+      "city": "Montería",
+      "file": "mapas/Costa_Monteria.png"
+    },
+    {
+      "city": "Planeta Rica",
+      "file": "mapas/Costa_Planeta_Rica.png"
+    },
+    {
+      "city": "Riohacha",
+      "file": "mapas/Costa_Riohacha.png"
+    },
+    {
+      "city": "Sahagún",
+      "file": "mapas/Costa_Sahagun.png"
+    },
+    {
+      "city": "San Andrés",
+      "file": "mapas/Costa_San_Andres.png"
+    },
+    {
+      "city": "San Marcos",
+      "file": "mapas/Costa_San_Marcos.png"
+    },
+    {
+      "city": "Santa Marta",
+      "file": "mapas/Costa_Santa_Marta.png"
+    },
+    {
+      "city": "Santiago de Tolú",
+      "file": "mapas/Costa_Santiago_De_Tolu.png"
+    },
+    {
+      "city": "Sincelejo",
+      "file": "mapas/Costa_Sincelejo.png"
+    },
+    {
+      "city": "Soledad",
+      "file": "mapas/Costa_Soledad.png"
+    },
+    {
+      "city": "Valledupar",
+      "file": "mapas/Costa_Valledupar.png"
+    }
+  ],
+  "Cundinamarca": [
+    {
+      "city": "Acacías",
+      "file": "mapas/Cundinamarca_Acacias.png"
+    },
+    {
+      "city": "Arauca",
+      "file": "mapas/Cundinamarca_Arauca.png"
+    },
+    {
+      "city": "Bogotá General",
+      "file": "mapas/Cundinamarca_Bogota_General.png"
+    },
+    {
+      "city": "Bogotá Norte",
+      "file": "mapas/Cundinamarca_Bogota_Norte.png"
+    },
+    {
+      "city": "Bogotá Sur",
+      "file": "mapas/Cundinamarca_Bogota_Sur.png"
+    },
+    {
+      "city": "Chía",
+      "file": "mapas/Cundinamarca_Chia.png"
+    },
+    {
+      "city": "Chiquinquirá",
+      "file": "mapas/Cundinamarca_Chiquinquira.png"
+    },
+    {
+      "city": "Duitama",
+      "file": "mapas/Cundinamarca_Duitama.png"
+    },
+    {
+      "city": "Facatativá",
+      "file": "mapas/Cundinamarca_Facatativa.png"
+    },
+    {
+      "city": "Florencia",
+      "file": "mapas/Cundinamarca_Florencia.png"
+    },
+    {
+      "city": "Funza",
+      "file": "mapas/Cundinamarca_Funza.png"
+    },
+    {
+      "city": "Fusagasugá",
+      "file": "mapas/Cundinamarca_Fusagasuga.png"
+    },
+    {
+      "city": "Girardot",
+      "file": "mapas/Cundinamarca_Girardot.png"
+    },
+    {
+      "city": "Madrid",
+      "file": "mapas/Cundinamarca_Madrid.png"
+    },
+    {
+      "city": "Mosquera",
+      "file": "mapas/Cundinamarca_Mosquera.png"
+    },
+    {
+      "city": "Puerto Boyacá",
+      "file": "mapas/Cundinamarca_Puerto_Boyaca.png"
+    },
+    {
+      "city": "Soacha",
+      "file": "mapas/Cundinamarca_Soacha.png"
+    },
+    {
+      "city": "Sogamoso",
+      "file": "mapas/Cundinamarca_Sogamoso.png"
+    },
+    {
+      "city": "Tunja",
+      "file": "mapas/Cundinamarca_Tunja.png"
+    },
+    {
+      "city": "Villavicencio",
+      "file": "mapas/Cundinamarca_Villavicencio.png"
+    },
+    {
+      "city": "Yopal",
+      "file": "mapas/Cundinamarca_Yopal.png"
+    },
+    {
+      "city": "Zipaquirá",
+      "file": "mapas/Cundinamarca_Zipaquira.png"
+    }
+  ],
+  "Eje Cafetero": [
+    {
+      "city": "Armenia",
+      "file": "mapas/Eje_Cafetero_Armenia.png"
+    },
+    {
+      "city": "Dosquebradas",
+      "file": "mapas/Eje_Cafetero_Dosquebradas.png"
+    },
+    {
+      "city": "Manizales",
+      "file": "mapas/Eje_Cafetero_Manizales.png"
+    },
+    {
+      "city": "Pereira",
+      "file": "mapas/Eje_Cafetero_Pereira.png"
+    }
+  ],
+  "Santander": [
+    {
+      "city": "Barrancabermeja",
+      "file": "mapas/Santander_Barrancabermeja.png"
+    },
+    {
+      "city": "Bucaramanga",
+      "file": "mapas/Santander_Bucaramanga.png"
+    },
+    {
+      "city": "Cúcuta",
+      "file": "mapas/Santander_Cucuta.png"
+    },
+    {
+      "city": "Floridablanca",
+      "file": "mapas/Santander_Floridablanca.png"
+    },
+    {
+      "city": "Girón",
+      "file": "mapas/Santander_Giron.png"
+    },
+    {
+      "city": "Ocaña",
+      "file": "mapas/Santander_Ocaдa.png"
+    },
+    {
+      "city": "Piedecuesta",
+      "file": "mapas/Santander_Piedecuesta.png"
+    }
+  ],
+  "Tolima - Huila": [
+    {
+      "city": "Ibagué",
+      "file": "mapas/Tolima_-_Huila_Ibague.png"
+    },
+    {
+      "city": "Neiva",
+      "file": "mapas/Tolima_-_Huila_Neiva.png"
+    },
+    {
+      "city": "Pitalito",
+      "file": "mapas/Tolima_-_Huila_Pitalito.png"
+    }
+  ],
+  "Valle": [
+    {
+      "city": "Buenaventura",
+      "file": "mapas/Valle_Buenaventura.png"
+    },
+    {
+      "city": "Buga",
+      "file": "mapas/Valle_Buga.png"
+    },
+    {
+      "city": "Cali",
+      "file": "mapas/Valle_Cali.png"
+    },
+    {
+      "city": "Cartago",
+      "file": "mapas/Valle_Cartago.png"
+    },
+    {
+      "city": "Ipiales",
+      "file": "mapas/Valle_Ipiales.png"
+    },
+    {
+      "city": "Palmira",
+      "file": "mapas/Valle_Palmira.png"
+    },
+    {
+      "city": "Pasto",
+      "file": "mapas/Valle_Pasto.png"
+    },
+    {
+      "city": "Popayán",
+      "file": "mapas/Valle_Popayan.png"
+    },
+    {
+      "city": "Tuluá",
+      "file": "mapas/Valle_Tulua.png"
+    }
+  ]
+}
