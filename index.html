@@ -3,144 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard POSSO · Éticos La Economía · MAT Dic 2025</title>
+<title>Dashboard POSSO · Éticos La Economía · MAT Jun 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
-:root{--azul:#1C58B7;--azul-d:#0d3a7a;--azul-l:#E8F0FB;--rojo:#E1251B;--rojo-l:#FDECEA;--amarillo:#FFEA00;--amarillo-l:#FFFDE7;--gris:#F5F7FA;--gris-d:#6B7280;--blanco:#FFFFFF;--texto:#1A1A2E;--verde:#16A34A;--verde-l:#DCFCE7;--naranja:#EA580C;--naranja-l:#FFF7ED;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',Arial,sans-serif;background:var(--gris);color:var(--texto);font-size:14px;}
-.header{background:linear-gradient(135deg,var(--azul-d) 0%,var(--azul) 100%);border-bottom:4px solid var(--amarillo);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:68px;box-shadow:0 2px 12px rgba(0,0,0,0.2);}
-.header-logo{display:flex;align-items:center;gap:14px;}
-.header-logo img{height:40px;}
-.header-title{color:white;font-size:18px;font-weight:800;letter-spacing:0.3px;}
-.header-subtitle{color:rgba(255,255,255,0.7);font-size:11px;margin-top:2px;}
-.header-badge{background:var(--amarillo);color:var(--azul-d);font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;letter-spacing:0.5px;}
-.tabs{background:var(--blanco);border-bottom:2px solid #E5E7EB;padding:0 16px;display:flex;flex-wrap:wrap;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,0.08);}
-.tab{padding:10px 14px;cursor:pointer;font-size:11.5px;font-weight:700;color:var(--gris-d);border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap;}
-.tab:hover{color:var(--azul);background:var(--azul-l);}
-.tab.active{color:var(--azul);border-bottom-color:var(--azul);}
-.main{padding:24px 32px;max-width:1600px;margin:0 auto;}
-.section{display:none;}
-.section.active{display:block;}
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:24px;}
-.kpi-card{background:var(--blanco);border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border-left:4px solid var(--azul);}
-.kpi-card.red{border-left-color:var(--rojo);}
-.kpi-card.green{border-left-color:var(--verde);}
-.kpi-card.yellow{border-left-color:#D97706;}
-.kpi-label{font-size:10.5px;font-weight:700;color:var(--gris-d);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
-.kpi-value{font-size:28px;font-weight:900;color:var(--azul);line-height:1;}
-.kpi-card.red .kpi-value{color:var(--rojo);}
-.kpi-card.green .kpi-value{color:var(--verde);}
-.kpi-card.yellow .kpi-value{color:#D97706;}
-.kpi-sub{font-size:11px;color:var(--gris-d);margin-top:6px;}
-.badge-up{color:var(--verde);font-weight:700;}
-.badge-down{color:var(--rojo);font-weight:700;}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px;}
-@media(max-width:1100px){.grid-2,.grid-3{grid-template-columns:1fr;}}
-.card{background:var(--blanco);border-radius:12px;padding:20px;box-shadow:0 1px 6px rgba(0,0,0,0.08);}
-.card-title{font-size:13px;font-weight:800;color:var(--azul-d);margin-bottom:16px;display:flex;align-items:center;gap:8px;text-transform:uppercase;letter-spacing:0.3px;}
-.chart-wrap{position:relative;height:280px;}
-.chart-wrap.tall{height:380px;}
-.cls-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:24px;}
-@media(max-width:900px){.cls-grid{grid-template-columns:repeat(2,1fr);}}
-.cls-card{border-radius:12px;padding:16px;text-align:center;}
-.cls-card.opp-alta{background:var(--rojo-l);border:2px solid var(--rojo);}
-.cls-card.opp-med{background:var(--naranja-l);border:2px solid var(--naranja);}
-.cls-card.mant{background:var(--verde-l);border:2px solid var(--verde);}
-.cls-card.crit{background:var(--amarillo-l);border:2px solid #D97706;}
-.cls-card.bajo{background:var(--gris);border:2px solid #D1D5DB;}
-.cls-num{font-size:36px;font-weight:900;line-height:1;}
-.cls-label{font-size:10px;font-weight:800;text-transform:uppercase;margin-top:4px;letter-spacing:0.5px;}
-.cls-sub{font-size:10px;color:var(--gris-d);margin-top:2px;}
-.opp-alta .cls-num{color:var(--rojo);}
-.opp-med .cls-num{color:var(--naranja);}
-.mant .cls-num{color:var(--verde);}
-.crit .cls-num{color:#D97706;}
-.bajo .cls-num{color:#9CA3AF;}
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12px;}
-thead th{background:var(--azul);color:white;padding:9px 10px;text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;white-space:nowrap;}
-tbody tr{border-bottom:1px solid #F3F4F6;transition:background 0.15s;}
-tbody tr:hover{background:var(--azul-l);}
-tbody td{padding:8px 10px;vertical-align:middle;}
-.ms-bar{display:flex;align-items:center;gap:6px;}
-.ms-bar-bg{flex:1;height:6px;background:#E5E7EB;border-radius:3px;min-width:50px;}
-.ms-bar-fill{height:100%;border-radius:3px;background:var(--azul);}
-.pill{display:inline-block;padding:2px 7px;border-radius:10px;font-size:9.5px;font-weight:800;text-transform:uppercase;white-space:nowrap;}
-.pill-opp-alta{background:var(--rojo-l);color:var(--rojo);}
-.pill-opp-med{background:var(--naranja-l);color:var(--naranja);}
-.pill-mant{background:var(--verde-l);color:var(--verde);}
-.pill-crit{background:var(--amarillo-l);color:#D97706;}
-.pill-bajo{background:var(--gris);color:var(--gris-d);}
-.delta-pos{color:var(--verde);font-weight:700;}
-.delta-neg{color:var(--rojo);font-weight:700;}
-.filter-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end;}
-.filter-group{display:flex;flex-direction:column;gap:4px;}
-.filter-group label{font-size:10.5px;font-weight:700;color:var(--gris-d);text-transform:uppercase;}
-.filter-bar input,.filter-bar select{padding:7px 11px;border:1px solid #D1D5DB;border-radius:8px;font-size:12px;background:white;outline:none;}
-.filter-bar input:focus,.filter-bar select:focus{border-color:var(--azul);}
-.coord-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin-bottom:24px;}
-.coord-card{background:var(--blanco);border-radius:12px;padding:16px;box-shadow:0 1px 6px rgba(0,0,0,0.08);border-top:3px solid var(--azul);cursor:pointer;transition:box-shadow 0.2s,transform 0.2s;}
-.coord-card:hover{box-shadow:0 4px 16px rgba(28,88,183,0.18);transform:translateY(-2px);}
-.coord-name{font-size:13px;font-weight:800;color:var(--azul-d);margin-bottom:10px;}
-.coord-stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px;}
-.coord-stat{text-align:center;}
-.coord-stat-val{font-size:20px;font-weight:900;color:var(--azul);}
-.coord-stat-lbl{font-size:9.5px;color:var(--gris-d);text-transform:uppercase;font-weight:600;}
-.coord-ciudades{font-size:10.5px;color:var(--gris-d);line-height:1.5;}
-.coord-cls-bar{display:flex;gap:3px;margin-top:10px;height:6px;border-radius:3px;overflow:hidden;}
-.coord-cls-seg{height:100%;}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal{background:white;border-radius:16px;padding:28px;max-width:720px;width:95%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--gris-d);line-height:1;}
-.modal-title{font-size:17px;font-weight:900;color:var(--azul-d);margin-bottom:16px;padding-right:32px;}
-.drog-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
-.drog-item{background:var(--gris);border-radius:8px;padding:7px 12px;font-size:11.5px;display:flex;align-items:center;gap:8px;}
-.drog-dot{width:8px;height:8px;border-radius:50%;background:var(--azul);flex-shrink:0;}
-.roadmap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:24px;}
-@media(max-width:900px){.roadmap-grid{grid-template-columns:1fr;}}
-.roadmap-card{border-radius:12px;padding:20px;}
-.roadmap-card.r1{background:var(--rojo-l);border:2px solid var(--rojo);}
-.roadmap-card.r2{background:var(--amarillo-l);border:2px solid #D97706;}
-.roadmap-card.r3{background:var(--azul-l);border:2px solid var(--azul);}
-.roadmap-phase{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.r1 .roadmap-phase{color:var(--rojo);}
-.r2 .roadmap-phase{color:#D97706;}
-.r3 .roadmap-phase{color:var(--azul);}
-.roadmap-title{font-size:15px;font-weight:900;margin-bottom:12px;}
-.roadmap-items{list-style:none;display:flex;flex-direction:column;gap:8px;}
-.roadmap-items li{font-size:12.5px;padding-left:16px;position:relative;line-height:1.5;}
-.roadmap-items li::before{content:'→';position:absolute;left:0;font-weight:800;}
-.r1 .roadmap-items li::before{color:var(--rojo);}
-.r2 .roadmap-items li::before{color:#D97706;}
-.r3 .roadmap-items li::before{color:var(--azul);}
-.section-title{font-size:19px;font-weight:900;color:var(--azul-d);margin-bottom:20px;display:flex;align-items:center;gap:10px;}
-.section-title::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--azul-l),transparent);}
-.insight{background:var(--azul-l);border-left:4px solid var(--azul);border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:12.5px;line-height:1.7;}
-.insight strong{color:var(--azul-d);}
-.pagination{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;}
-.pagination button{padding:5px 10px;border:1px solid #D1D5DB;border-radius:6px;background:white;cursor:pointer;font-size:11px;}
-.pagination button.active{background:var(--azul);color:white;border-color:var(--azul);}
-.pagination button:hover:not(.active){background:var(--azul-l);}
-.footer{text-align:center;padding:20px;color:var(--gris-d);font-size:10.5px;border-top:1px solid #E5E7EB;margin-top:32px;}
-.btn-detail{background:var(--azul-l);color:var(--azul);border:none;padding:3px 8px;border-radius:6px;cursor:pointer;font-size:10.5px;font-weight:700;white-space:nowrap;}
-.btn-detail:hover{background:var(--azul);color:white;}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+:root{--azul:#1C58B7;--azul-d:#143F85;--azul-l:#EEF3FB;--rojo:#E1251B;--rojo-l:#FFF0EF;--amarillo:#FFEA00;--amarillo-l:#FFF8C2;--gris:#F5F7FB;--gris-d:#65748B;--blanco:#FFFFFF;--verde:#198754;--verde-l:#EAF7EF;--naranja:#B96D00;--naranja-l:#FFF5DF;--texto:#18253A;--linea:#E4EAF2;--sombra:0 10px 30px rgba(20,63,133,.08);--sombra-sm:0 3px 14px rgba(20,63,133,.07);}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'DM Sans',Arial,sans-serif;background:var(--gris);color:var(--texto);font-size:14px}button,input,select{font:inherit}button{cursor:pointer}
+.header{min-height:84px;background:linear-gradient(115deg,#143F85 0%,#1C58B7 78%,#416EBB 100%);border-bottom:4px solid var(--amarillo);padding:0 38px;display:flex;align-items:center;justify-content:space-between;gap:24px;box-shadow:0 4px 18px rgba(20,63,133,.22);position:relative;overflow:hidden}.header:after{content:'';position:absolute;width:280px;height:280px;right:-100px;top:-160px;border:1px solid rgba(255,255,255,.2);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.04),0 0 0 56px rgba(255,255,255,.025);pointer-events:none}.header-logo{display:flex;align-items:center;gap:16px;position:relative;z-index:1;flex:1;min-width:0}.header-logo>div{min-width:0;max-width:100%}.header-logo img{height:46px;width:auto;object-fit:contain;flex-shrink:0}.header-title{color:#fff;font-family:Manrope,Arial,sans-serif;font-size:19px;font-weight:800;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.header-subtitle{color:#DCE7F8;font-size:11px;margin-top:4px;white-space:normal;overflow-wrap:anywhere}.header-badge{background:var(--amarillo);color:var(--azul-d);font-size:11px;font-weight:800;padding:8px 13px;border-radius:9px;letter-spacing:.7px;position:relative;z-index:1;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+.tabs{background:rgba(255,255,255,.96);border-bottom:1px solid var(--linea);padding:0 28px;display:flex;flex-wrap:wrap;gap:3px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(20,63,133,.06);backdrop-filter:blur(12px)}.tab{padding:14px 15px 12px;cursor:pointer;font-size:11.5px;font-weight:700;color:var(--gris-d);border-bottom:3px solid transparent;border-radius:8px 8px 0 0;transition:all .18s ease;white-space:nowrap}.tab:hover{color:var(--azul);background:var(--azul-l)}.tab.active{color:var(--azul);border-bottom-color:var(--azul);background:linear-gradient(to bottom,#fff,var(--azul-l))}
+.main{padding:32px 38px 52px;max-width:1600px;margin:0 auto}.section{display:none;animation:sectionIn .22s ease}.section.active{display:block}@keyframes sectionIn{from{opacity:.35;transform:translateY(4px)}to{opacity:1;transform:none}}
+.section-title{font-family:Manrope,Arial,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--azul-d);margin-bottom:22px;display:flex;align-items:center;gap:12px}.section-title:after{content:'';height:3px;flex:1;background:linear-gradient(to right,#D6E3F7,transparent);border-radius:10px}
+.insight{background:linear-gradient(110deg,#143F85 0%,#1C58B7 100%);color:#EAF1FC;border-left:0;border-radius:16px;padding:21px 24px;margin-bottom:20px;font-size:13px;line-height:1.7;box-shadow:var(--sombra);position:relative;overflow:hidden}.insight:after{content:'POSSO';position:absolute;right:22px;bottom:-17px;font-family:Manrope,Arial,sans-serif;font-size:65px;font-weight:800;color:rgba(255,255,255,.06);letter-spacing:-3px}.insight strong{color:var(--amarillo)}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(190px,1fr));gap:14px;margin-bottom:22px}.kpi-card{background:var(--blanco);border:1px solid var(--linea);border-radius:15px;padding:18px 18px 16px;box-shadow:var(--sombra-sm);border-left:4px solid var(--azul);min-height:122px;position:relative;overflow:hidden;transition:transform .18s ease,box-shadow .18s ease}.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--sombra)}.kpi-card.red{border-left-color:var(--rojo)}.kpi-card.green{border-left-color:var(--verde)}.kpi-card.yellow{border-left-color:#D7B500}.kpi-label{font-size:10px;font-weight:800;color:var(--gris-d);text-transform:uppercase;letter-spacing:.7px;margin-bottom:9px}.kpi-value{font-family:Manrope,Arial,sans-serif;font-size:29px;font-weight:800;color:var(--azul);line-height:1;letter-spacing:-.8px}.kpi-card.red .kpi-value{color:var(--rojo)}.kpi-card.green .kpi-value{color:var(--verde)}.kpi-card.yellow .kpi-value{color:#A96A00}.kpi-sub{font-size:11px;color:var(--gris-d);margin-top:9px}.badge-up{color:var(--verde);font-weight:800}.badge-down{color:var(--rojo);font-weight:800}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:20px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:20px}.card{background:var(--blanco);border:1px solid var(--linea);border-radius:15px;padding:20px;box-shadow:var(--sombra-sm)}.card-title{font-family:Manrope,Arial,sans-serif;font-size:13px;font-weight:800;color:var(--azul-d);margin-bottom:16px;display:flex;align-items:center;gap:8px;text-transform:none;letter-spacing:0}.chart-wrap{position:relative;height:280px}.chart-wrap.tall{height:380px}
+.cls-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:22px}.cls-card{border-radius:14px;padding:17px 12px;text-align:center;border:1px solid transparent;transition:transform .18s ease,box-shadow .18s ease}.cls-card:hover{transform:translateY(-2px);box-shadow:var(--sombra-sm)}.cls-card.opp-alta{background:var(--rojo-l);border-color:#FFD2CE}.cls-card.opp-med{background:var(--naranja-l);border-color:#F3D7AB}.cls-card.mant{background:var(--verde-l);border-color:#BFE8CD}.cls-card.crit{background:var(--amarillo-l);border-color:#F2DD69}.cls-card.bajo{background:#F0F3F7;border-color:#DCE2EA}.cls-num{font-family:Manrope,Arial,sans-serif;font-size:32px;font-weight:800;line-height:1}.cls-label{font-size:10px;font-weight:800;text-transform:uppercase;margin-top:7px;letter-spacing:.6px}.cls-sub{font-size:10px;color:var(--gris-d);margin-top:3px}.opp-alta .cls-num{color:var(--rojo)}.opp-med .cls-num{color:var(--naranja)}.mant .cls-num{color:var(--verde)}.crit .cls-num{color:#A96A00}.bajo .cls-num{color:#8995A6}
+.table-wrap{overflow-x:auto;border:1px solid var(--linea);border-radius:11px}table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;min-width:720px}thead th{background:var(--azul);color:#fff;padding:11px 10px;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.45px;white-space:normal;line-height:1.2;overflow-wrap:anywhere}thead th:first-child{border-radius:10px 0 0 0}thead th:last-child{border-radius:0 10px 0 0}tbody tr{border-bottom:1px solid #EDF1F6;transition:background .15s}tbody tr:hover{background:var(--azul-l)}tbody tr:last-child{border-bottom:0}tbody td{padding:10px;vertical-align:middle;border-bottom:1px solid #EDF1F6}tbody tr:last-child td{border-bottom:0}.ms-bar{display:flex;align-items:center;gap:7px;min-width:110px}.ms-bar-bg{flex:1;height:7px;background:#E8EDF4;border-radius:5px;min-width:50px;overflow:hidden}.ms-bar-fill{height:100%;border-radius:5px;background:var(--azul)}.pill{display:inline-block;padding:4px 8px;border-radius:99px;font-size:9.5px;font-weight:800;text-transform:uppercase;white-space:nowrap}.pill-opp-alta{background:var(--rojo-l);color:var(--rojo)}.pill-opp-med{background:var(--naranja-l);color:var(--naranja)}.pill-mant{background:var(--verde-l);color:var(--verde)}.pill-crit{background:var(--amarillo-l);color:#A96A00}.pill-bajo{background:#F0F3F7;color:var(--gris-d)}.delta-pos{color:var(--verde);font-weight:800}.delta-neg{color:var(--rojo);font-weight:800}
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:flex-end;background:#fff;border:1px solid var(--linea);border-radius:13px;padding:14px;box-shadow:var(--sombra-sm)}.filter-group{display:flex;flex-direction:column;gap:5px}.filter-group label{font-size:10px;font-weight:800;color:var(--gris-d);text-transform:uppercase;letter-spacing:.4px}.filter-bar input,.filter-bar select{padding:9px 11px;border:1px solid var(--linea);border-radius:8px;font-size:12px;background:white;outline:none;color:var(--texto);min-width:150px}.filter-bar input:focus,.filter-bar select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(28,88,183,.1)}
+.coord-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-bottom:24px}.coord-card{background:var(--blanco);border:1px solid var(--linea);border-radius:14px;padding:16px;box-shadow:var(--sombra-sm);border-top:4px solid var(--azul);cursor:pointer;transition:box-shadow .2s,transform .2s}.coord-card:hover{box-shadow:var(--sombra);transform:translateY(-3px);border-color:#C6D5ED}.coord-name{font-size:13px;font-weight:800;color:var(--azul-d);margin-bottom:10px}.coord-stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:9px}.coord-stat{text-align:center;min-width:37px}.coord-stat-val{font-family:Manrope,Arial,sans-serif;font-size:19px;font-weight:800;color:var(--azul)}.coord-stat-lbl{font-size:9px;color:var(--gris-d);text-transform:uppercase;font-weight:700}.coord-ciudades{font-size:10.5px;color:var(--gris-d);line-height:1.5}.coord-cls-bar{display:flex;gap:2px;margin-top:11px;height:7px;border-radius:5px;overflow:hidden;background:#EDF1F6}.coord-cls-seg{height:100%}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(12,30,62,.56);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}.modal-overlay.open{display:flex}.modal{background:white;border-radius:18px;padding:28px;max-width:760px;width:95%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 22px 70px rgba(0,0,0,.28)}.modal-close{position:absolute;top:14px;right:15px;background:var(--blue-soft);border:0;border-radius:8px;font-size:18px;cursor:pointer;color:var(--azul-d);line-height:1;padding:5px 9px}.modal-title{font-family:Manrope,Arial,sans-serif;font-size:18px;font-weight:800;color:var(--azul-d);margin-bottom:16px;padding-right:32px}.drog-list{display:flex;flex-direction:column;gap:5px;margin-top:10px}.drog-item{background:var(--gris);border-radius:8px;padding:8px 12px;font-size:11.5px;display:flex;align-items:center;gap:8px}.drog-dot{width:8px;height:8px;border-radius:50%;background:var(--azul);flex-shrink:0}
+.roadmap-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:24px}.roadmap-card{border-radius:14px;padding:21px;position:relative;overflow:hidden}.roadmap-card:after{content:'';position:absolute;right:-25px;top:-25px;width:90px;height:90px;border-radius:50%;border:1px solid rgba(20,63,133,.12)}.roadmap-card.r1{background:var(--rojo-l);border:1px solid #FFD2CE}.roadmap-card.r2{background:var(--amarillo-l);border:1px solid #F2DD69}.roadmap-card.r3{background:var(--azul-l);border:1px solid #D6E2F4}.roadmap-phase{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:9px}.r1 .roadmap-phase{color:var(--rojo)}.r2 .roadmap-phase{color:#A96A00}.r3 .roadmap-phase{color:var(--azul)}.roadmap-title{font-family:Manrope,Arial,sans-serif;font-size:16px;font-weight:800;margin-bottom:13px}.roadmap-items{list-style:none;display:flex;flex-direction:column;gap:9px}.roadmap-items li{font-size:12px;padding-left:17px;position:relative;line-height:1.5}.roadmap-items li:before{content:'→';position:absolute;left:0;font-weight:800}.r1 .roadmap-items li:before{color:var(--rojo)}.r2 .roadmap-items li:before{color:#A96A00}.r3 .roadmap-items li:before{color:var(--azul)}
+.pagination{display:flex;gap:6px;align-items:center;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}.pagination button{padding:6px 10px;border:1px solid var(--linea);border-radius:7px;background:white;color:var(--azul-d);cursor:pointer;font-size:11px}.pagination button.active{background:var(--azul);color:white;border-color:var(--azul)}.pagination button:hover:not(.active){background:var(--azul-l)}.footer{text-align:center;padding:22px;color:var(--gris-d);font-size:10.5px;border-top:1px solid var(--linea);margin-top:38px}.btn-detail{background:var(--azul-l);color:var(--azul);border:0;padding:4px 9px;border-radius:7px;cursor:pointer;font-size:10.5px;font-weight:800;white-space:nowrap}.btn-detail:hover{background:var(--azul);color:white}
+@media(max-width:1100px){.grid-2,.grid-3{grid-template-columns:1fr}.kpi-grid{grid-template-columns:repeat(3,minmax(190px,1fr))}}@media(max-width:900px){.cls-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.roadmap-grid{grid-template-columns:1fr 1fr}}@media(max-width:700px){.header{padding:16px 18px;min-height:96px;align-items:flex-start}.header-logo{gap:10px}.header-logo img{height:37px}.header-title{font-size:14px}.header-subtitle{font-size:10px;max-width:240px;line-height:1.3}.header-badge{font-size:9px;padding:7px 8px}.tabs{padding:0 9px;overflow-x:auto;flex-wrap:nowrap}.tab{padding:12px 10px 10px;font-size:10px}.main{padding:22px 15px 38px}.section-title{font-size:20px}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.kpi-card{padding:14px;min-height:112px}.kpi-value{font-size:23px}.cls-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.cls-card{padding:14px 8px}.cls-num{font-size:28px}.roadmap-grid{grid-template-columns:1fr}.filter-bar{padding:11px}.filter-bar input,.filter-bar select{min-width:135px;max-width:100%}.grid-2{gap:14px}.card{padding:15px}.chart-wrap{height:240px}.chart-wrap.tall{height:320px}.insight{padding:18px 17px;font-size:12px}.footer{font-size:9px;line-height:1.5}}
+@media print{.tabs{display:none}.main{padding:0}.section{display:block!important;break-inside:avoid}.header{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card,.kpi-card,.insight{box-shadow:none}}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div class="header-logo">
-    <img src="logo-top.png" alt="Éticos La Economía" onerror="this.style.display='none'">
+    <img src="eticos_logo.png" alt="Éticos La Economía" onerror="this.style.display='none'">
     <div>
       <div class="header-title">Dashboard POSSO · Market Intelligence</div>
       <div class="header-subtitle">Análisis Estratégico de Participación de Mercado · Éticos La Economía</div>
     </div>
   </div>
-  <div class="header-badge">MAT DIC 2025</div>
+  <div class="header-badge">MAT JUN 2026</div>
 </div>
 
 <div class="tabs">
@@ -160,26 +58,26 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <div id="tab-resumen" class="section active">
   <div class="section-title">Resumen Ejecutivo</div>
   <div class="insight">
-    <strong>Éticos La Economía</strong> cerró el MAT Dic 2025 con ventas de <strong>$219.8B COP (+20.2% YoY)</strong>, creciendo <strong>4.3 pp por encima del mercado total</strong> (+15.9%). El Market Share avanzó de 2.55% a <strong>2.64%</strong>, ganando <strong>+0.09 pp</strong>. La red activa comprende <strong>459 droguerías</strong> en <strong>279 bricks geográficos</strong> bajo la gestión de <strong>20 coordinadores</strong>.
+    <strong>Éticos La Economía</strong> cerró el MAT Jun 2026 con ventas de <strong>$219.9B COP (+20.2% YoY)</strong>, creciendo <strong>3.6 pp por encima de Pharmacy Chains</strong> (+16.6%). El Market Share avanzó de 2.93% a <strong>3.02%</strong>, ganando <strong>+0.09 pp</strong>. La maestra registra <strong>462 puntos abiertos</strong>, de los cuales <strong>415</strong> tienen ventas en el Hyper; <strong>398</strong> cruzan por NIT y quedan asignados a <strong>19 coordinadores</strong>.
   </div>
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-label">Ventas Éticos MAT Dic 2025</div><div class="kpi-value">$219.8B</div><div class="kpi-sub"><span class="badge-up">▲ +20.2%</span> vs. MAT Dic 2024</div></div>
-    <div class="kpi-card green"><div class="kpi-label">Market Share vs. Mercado Total</div><div class="kpi-value">2.64%</div><div class="kpi-sub"><span class="badge-up">▲ +0.09 pp</span> (prev. 2.55%)</div></div>
-    <div class="kpi-card"><div class="kpi-label">Mercado Total Colombia</div><div class="kpi-value">$12.1T</div><div class="kpi-sub"><span class="badge-up">▲ +15.9%</span> vs. MAT Dic 2024</div></div>
-    <div class="kpi-card yellow"><div class="kpi-label">Droguerías Activas</div><div class="kpi-value">459</div><div class="kpi-sub">279 bricks · 20 coordinadores</div></div>
-    <div class="kpi-card red"><div class="kpi-label">Bricks Críticos</div><div class="kpi-value">138</div><div class="kpi-sub">MS bajo en mercados grandes</div></div>
-    <div class="kpi-card"><div class="kpi-label">Oportunidades Altas</div><div class="kpi-value">339</div><div class="kpi-sub">Bricks sin presencia · alta relevancia</div></div>
+    <div class="kpi-card"><div class="kpi-label">Ventas Éticos MAT Jun 2026</div><div class="kpi-value">$219.9B</div><div class="kpi-sub"><span class="badge-up">▲ +20.2%</span> vs. MAT Jun 2025</div></div>
+    <div class="kpi-card green"><div class="kpi-label">Market Share vs. Mercado Total</div><div class="kpi-value">3.02%</div><div class="kpi-sub"><span class="badge-up">▲ +0.09 pp</span> (prev. 2.93%)</div></div>
+    <div class="kpi-card"><div class="kpi-label">Mercado Pharmacy Chains</div><div class="kpi-value">$7.3T</div><div class="kpi-sub"><span class="badge-up">▲ +16.6%</span> vs. MAT Jun 2025</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">Droguerías Activas</div><div class="kpi-value">415</div><div class="kpi-sub">264 bricks · Pharmacy Chains</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Bricks Críticos</div><div class="kpi-value">115</div><div class="kpi-sub">MS bajo en mercados grandes</div></div>
+    <div class="kpi-card"><div class="kpi-label">Oportunidades Altas</div><div class="kpi-value">154</div><div class="kpi-sub">Bricks sin presencia · alta relevancia</div></div>
   </div>
   <div class="cls-grid">
-    <div class="cls-card opp-alta"><div class="cls-num">339</div><div class="cls-label">Oportunidad Alta</div><div class="cls-sub">Sin presencia · mercado grande</div></div>
-    <div class="cls-card opp-med"><div class="cls-num">429</div><div class="cls-label">Oportunidad Media</div><div class="cls-sub">Sin presencia · mercado mediano</div></div>
-    <div class="cls-card mant"><div class="cls-num">138</div><div class="cls-label">Mantenimiento</div><div class="cls-sub">MS sólido · defender posición</div></div>
-    <div class="cls-card crit"><div class="cls-num">138</div><div class="cls-label">Críticos</div><div class="cls-sub">MS bajo · mercado grande</div></div>
-    <div class="cls-card bajo"><div class="cls-num">1,016</div><div class="cls-label">Bajo Impacto</div><div class="cls-sub">Mercados pequeños</div></div>
+    <div class="cls-card opp-alta"><div class="cls-num">154</div><div class="cls-label">Oportunidad Alta</div><div class="cls-sub">Sin presencia · mercado grande</div></div>
+    <div class="cls-card opp-med"><div class="cls-num">179</div><div class="cls-label">Oportunidad Media</div><div class="cls-sub">Sin presencia · mercado mediano</div></div>
+    <div class="cls-card mant"><div class="cls-num">41</div><div class="cls-label">Mantenimiento</div><div class="cls-sub">MS sólido · defender posición</div></div>
+    <div class="cls-card crit"><div class="cls-num">115</div><div class="cls-label">Críticos</div><div class="cls-sub">MS bajo · mercado grande</div></div>
+    <div class="cls-card bajo"><div class="cls-num">489</div><div class="cls-label">Bajo Impacto</div><div class="cls-sub">Mercados pequeños</div></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="card-title">📈 Crecimiento YoY: Éticos vs. Mercado</div><div class="chart-wrap"><canvas id="chartGrowth"></canvas></div></div>
-    <div class="card"><div class="card-title">🏆 Top 10 Coordinadores por Market Share</div><div class="chart-wrap"><canvas id="chartCoordTop"></canvas></div></div>
+    <div class="card"><div class="card-title">🏆 Top 10 coordinadores por Market Share</div><div class="chart-wrap"><canvas id="chartCoordTop"></canvas></div></div>
   </div>
   <div class="grid-2">
     <div class="card"><div class="card-title">🗺️ Top 10 Departamentos por Ventas Éticos</div><div class="chart-wrap"><canvas id="chartRegion"></canvas></div></div>
@@ -224,10 +122,10 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <div id="tab-coordinadores" class="section">
   <div class="section-title">Desempeño por Coordinador</div>
   <div class="insight">
-    Red de <strong>20 coordinadores</strong> gestionando 459 droguerías activas en 279 bricks. Mayor MS: <strong>John Piña (29.5%)</strong> y <strong>Alfredo Barrios (25.0%)</strong>. Mayor oportunidad de mejora: <strong>Luis Torres (0.6%)</strong> y <strong>Willer Larios (2.0%)</strong>.
+    La maestra <strong>DirectorioCierreJunio2026.xls</strong> asigna puntos de venta, coordinadores, supervisores, departamentos, ciudades y bricks IQVIA. Se cruzaron <strong>398 de 415 outlets</strong> del Hyper por NIT; los 17 restantes quedan visibles sin asignación cuando no existe coincidencia en la maestra.
   </div>
   <div class="card" style="margin-bottom:20px">
-    <div class="card-title">📊 MS por Coordinador vs. Promedio Nacional (2.64%)</div>
+    <div class="card-title">📊 MS por Coordinador vs. Promedio Nacional (3.02%)</div>
     <div class="chart-wrap tall"><canvas id="chartCoordAll"></canvas></div>
   </div>
   <div class="coord-grid" id="coordGrid"></div>
@@ -237,7 +135,7 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <div id="tab-oportunidades" class="section">
   <div class="section-title">Mapa de Oportunidades</div>
   <div class="insight">
-    <strong>339 bricks de Oportunidad Alta</strong> con potencial acumulado de 5.4M PRECIS sin presencia Éticos. <strong>138 bricks Críticos</strong> con presencia actual pero MS inferior al umbral P50 (10.84%) representan el mayor riesgo de pérdida de participación.
+    <strong>154 bricks de Oportunidad Alta</strong> con potencial acumulado de 4.3M PRECIS sin presencia Éticos. <strong>115 bricks Críticos</strong> con presencia actual pero MS inferior al umbral P50 (14.27%) representan el mayor riesgo de pérdida de participación.
   </div>
   <div class="grid-2">
     <div class="card">
@@ -259,7 +157,7 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <div id="tab-roadmap" class="section">
   <div class="section-title">Roadmap Estratégico</div>
   <div class="insight">
-    Basado en la Matriz de Crecimiento–Participación aplicada a los 2,060 bricks analizados. Foco inmediato en los <strong>138 bricks Críticos</strong> donde Éticos tiene presencia pero pierde participación frente al crecimiento del mercado.
+    Basado en la Matriz de Crecimiento–Participación aplicada a los 978 bricks del canal Pharmacy Chains. Foco inmediato en los <strong>115 bricks Críticos</strong> donde Éticos tiene presencia pero pierde participación frente al crecimiento del mercado.
   </div>
   <div class="roadmap-grid">
     <div class="roadmap-card r1">
@@ -288,11 +186,11 @@ tbody td{padding:8px 10px;vertical-align:middle;}
       <div class="roadmap-phase">🎯 Mediano Plazo · 6–12 meses</div>
       <div class="roadmap-title">Expansión Estratégica de Red</div>
       <ul class="roadmap-items">
-        <li>Expansión en los 339 bricks de Oportunidad Alta con mayor potencial de mercado</li>
+        <li>Expansión en los 154 bricks de Oportunidad Alta con mayor potencial de mercado</li>
         <li>Priorizar ciudades intermedias donde el mercado crece &gt; 15% sin presencia Éticos</li>
         <li>Desarrollar modelo de alianza para bricks de difícil acceso directo</li>
-        <li>Establecer meta de MS nacional del 3.0% para MAT Dic 2026 (+0.36 pp)</li>
-        <li>Implementar dashboard de seguimiento mensual por coordinador con alertas automáticas</li>
+        <li>Definir la meta comercial posterior al corte MAT Jun 2026 con el equipo Comercial</li>
+        <li>Implementar seguimiento mensual por brick con alertas automáticas</li>
       </ul>
     </div>
   </div>
@@ -302,7 +200,7 @@ tbody td{padding:8px 10px;vertical-align:middle;}
       <div class="table-wrap"><table><thead><tr><th>Coordinador</th><th>Drog.</th><th>Bricks</th><th>MS %</th><th>Mant.</th><th>Crít.</th></tr></thead><tbody id="coordTopBody"></tbody></table></div>
     </div>
     <div class="card">
-      <div class="card-title">⚠️ Coordinadores con Menor MS — Plan de Mejora</div>
+      <div class="card-title">⚠️ Coordinadores con Menor MS — Plan de mejora</div>
       <div class="table-wrap"><table><thead><tr><th>Coordinador</th><th>Drog.</th><th>Bricks</th><th>MS %</th><th>Mant.</th><th>Crít.</th></tr></thead><tbody id="coordBotBody"></tbody></table></div>
     </div>
   </div>
@@ -312,7 +210,7 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <div id="tab-posicionamiento" class="section">
   <div class="section-title">Posicionamiento de Droguerías en su Brick</div>
   <div class="insight">
-    Análisis de las <strong>368 droguerías</strong> con presencia en <strong>ambos períodos</strong> (MAT Dic 2024 y MAT Dic 2025). Se mide la variación de participación de cada droguерía dentro de su brick específico. <strong style="color:var(--verde)">197 ganaron posición (53.5%)</strong> y <strong style="color:var(--rojo)">169 perdieron posición (45.9%)</strong>. El Δ MS promedio fue de <strong>+0.39 pp</strong>, confirmando avance neto de la red.
+    Análisis de las <strong>382 droguerías</strong> con presencia en <strong>ambos períodos</strong> (MAT Jun 2025 y MAT Jun 2026). Se mide la variación de participación de cada droguерía dentro de su brick específico. <strong style="color:var(--verde)">196 ganaron posición (51.3%)</strong> y <strong style="color:var(--rojo)">158 perdieron posición (41.4%)</strong>. El Δ MS promedio fue de <strong>+0.31 pp</strong>, confirmando avance neto de la red.
   </div>
 
   <!-- KPIs -->
@@ -367,12 +265,12 @@ tbody td{padding:8px 10px;vertical-align:middle;}
         <thead><tr>
           <th>Droguерía</th><th>Brick</th><th>Ciudad</th>
           <th>Coordinador</th><th>Supervisor</th>
-          <th style="text-align:right">MS 2024</th>
           <th style="text-align:right">MS 2025</th>
+          <th style="text-align:right">MS 2026</th>
           <th style="text-align:right">Δ MS</th>
           <th style="min-width:80px">Magnitud</th>
           <th style="text-align:right">Crec. Ventas</th>
-          <th style="text-align:right">Ventas 2025</th>
+          <th style="text-align:right">Ventas 2026</th>
         </tr></thead>
         <tbody id="rankingBody"></tbody>
       </table>
@@ -423,7 +321,7 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 <div id="tab-competidores" class="section">
   <div class="section-title">⚔️ Ranking Competitivo por Brick</div>
   <div class="insight">
-    Análisis de las <strong>15 cadenas farmacéuticas</strong> presentes en el canal Pharmacy Chains. Éticos lidera en <strong id="comp-lideres-n">...</strong> bricks, ocupa posición #2 en <strong id="comp-2nd-n">...</strong> y está en posición #3 o inferior en <strong id="comp-3rd-n">...</strong>. El principal competidor por número de bricks liderados es <strong id="comp-rival-n">...</strong>.
+    Análisis de las cadenas etiquetadas presentes en el canal Pharmacy Chains. Éticos lidera en <strong id="comp-lideres-n">...</strong> bricks, ocupa posición #2 en <strong id="comp-2nd-n">...</strong> y está en posición #3 o inferior en <strong id="comp-3rd-n">...</strong>. El principal competidor por número de bricks liderados es <strong id="comp-rival-n">...</strong>.
   </div>
 
   <!-- KPIs de posición -->
@@ -505,7 +403,7 @@ tbody td{padding:8px 10px;vertical-align:middle;}
   </div>
 </div>
 
-<div class="footer">Dashboard POSSO · Éticos La Economía · MAT Diciembre 2025 · Fuente: IQVIA POSSO · Confidencial</div>
+<div class="footer">Dashboard POSSO · Éticos La Economía · MAT Junio 2026 · Fuentes: CO_POSSO_ETICOS_202606_V1.twbx + DirectorioCierreJunio2026.xls · Canal Pharmacy Chains · Confidencial</div>
 
 <script>
 // ============================================================
@@ -513,8 +411,9 @@ tbody td{padding:8px 10px;vertical-align:middle;}
 // ============================================================
 let DATA = {
   coordinadores:[],top_oportunidades:[],top_criticos:[],top_mantenimiento:[],bricks:[],
-  meta:{la_economia:{ms_pct:2.64,ms_prev_pct:2.55,ms_delta:0.09,yoy_growth:20.2,outlets:459},total_market_growth:15.9},
-  clasificacion_summary:{OPORTUNIDAD_ALTA:{count:339},OPORTUNIDAD_MEDIA:{count:429},MANTENIMIENTO:{count:138},CRITICO:{count:138},BAJO_IMPACTO:{count:1016}},
+  meta:{la_economia:{ms_pct:3.02,ms_prev_pct:2.93,ms_delta:0.09,yoy_growth:20.2,outlets:415},total_market_growth:16.6},
+  clasificacion_summary:{OPORTUNIDAD_ALTA:{count:154},OPORTUNIDAD_MEDIA:{count:179},MANTENIMIENTO:{count:41},CRITICO:{count:115},BAJO_IMPACTO:{count:489}},
+  cities_rank:[],
   regions:[
     {dept:'Atlántico',values_m:38813.3},{dept:'Bolívar',values_m:35199.1},{dept:'Cesar',values_m:24989.2},
     {dept:'Magdalena',values_m:23980.5},{dept:'Valle del Cauca',values_m:20297.6},{dept:'Córdoba',values_m:19233.3},
@@ -561,7 +460,7 @@ function showTab(id,el){
 // ============================================================
 function buildCharts(){
   const la=DATA.meta.la_economia;
-  const mktGrowth=DATA.meta.total_market_growth||15.9;
+  const mktGrowth=DATA.meta.total_market_growth||16.6;
 
   // Growth bar
   new Chart(document.getElementById('chartGrowth'),{
@@ -576,7 +475,8 @@ function buildCharts(){
   });
 
   // Top 10 coordinadores
-  const top10=[...DATA.coordinadores].sort((a,b)=>b.ms_pct-a.ms_pct).slice(0,10);
+  const territory=DATA.coordinadores.length?DATA.coordinadores:(DATA.cities_rank||[]);
+  const top10=[...territory].sort((a,b)=>DATA.coordinadores.length?(b.ms_pct-a.ms_pct):((b.sales_b||0)-(a.sales_b||0))).slice(0,10);
   new Chart(document.getElementById('chartCoordTop'),{
     type:'bar',
     data:{labels:top10.map(c=>c.coordinador.split(' ').slice(0,2).join(' ')),
@@ -614,14 +514,14 @@ function buildCharts(){
   });
 
   // Todos los coordinadores
-  const allC=[...DATA.coordinadores].sort((a,b)=>b.ms_pct-a.ms_pct);
+  const allC=[...territory].sort((a,b)=>b.ms_pct-a.ms_pct);
   new Chart(document.getElementById('chartCoordAll'),{
     type:'bar',
     data:{labels:allC.map(c=>c.coordinador),
       datasets:[
         {label:'MS % Coordinador',data:allC.map(c=>c.ms_pct),
-          backgroundColor:allC.map(c=>c.ms_pct>=(la.ms_pct||2.64)?'#1C58B7':'#E1251B'),borderRadius:6},
-        {label:'MS Nacional (2.64%)',data:allC.map(()=>la.ms_pct||2.64),type:'line',
+          backgroundColor:allC.map(c=>c.ms_pct>=(la.ms_pct||3.02)?'#1C58B7':'#E1251B'),borderRadius:6},
+        {label:'MS Nacional ('+(la.ms_pct||3.02).toFixed(2)+'%)',data:allC.map(()=>la.ms_pct||3.02),type:'line',
           borderColor:'#FFEA00',borderWidth:2.5,borderDash:[6,3],pointRadius:0,fill:false,
           datalabels:{display:false}}
       ]},
@@ -639,6 +539,7 @@ function buildCharts(){
 // ============================================================
 function buildCoordGrid(){
   const grid=document.getElementById('coordGrid');
+  if(!DATA.coordinadores.length){ grid.innerHTML='<div class="insight" style="grid-column:1/-1;margin:0">No hay coordinadores ni supervisores en el extract fuente. La lectura por ciudad se presenta en el gráfico superior; evita interpretar esta vista como asignación comercial.</div>'; return; }
   DATA.coordinadores.forEach(c=>{
     const tot=c.mantenimiento+c.critico+c.opp_alta||1;
     const mPct=c.mantenimiento/tot*100, crPct=c.critico/tot*100, oPct=c.opp_alta/tot*100;
@@ -721,8 +622,9 @@ function buildOppTables(){
 // ROADMAP TABLES
 // ============================================================
 function buildRoadmapTables(){
-  const sorted=[...DATA.coordinadores].sort((a,b)=>b.ms_pct-a.ms_pct);
+  const sorted=[...(DATA.coordinadores.length?DATA.coordinadores:(DATA.cities_rank||[]))].sort((a,b)=>b.ms_pct-a.ms_pct);
   const topB=document.getElementById('coordTopBody');
+  if(!sorted.length){ document.getElementById('coordTopBody').innerHTML='<tr><td colspan="6" class="empty">Sin datos territoriales disponibles.</td></tr>'; document.getElementById('coordBotBody').innerHTML='<tr><td colspan="6" class="empty">Sin datos territoriales disponibles.</td></tr>'; return; }
   sorted.slice(0,7).forEach(c=>{
     topB.innerHTML+=`<tr><td style="font-weight:700">${c.coordinador}</td><td>${c.num_drog}</td><td>${c.num_bricks}</td>
       <td class="delta-pos">${c.ms_pct.toFixed(1)}%</td>
@@ -1092,7 +994,7 @@ function buildCompKPIs(){
   document.getElementById('comp-lideres-n').textContent = p1 + ' bricks';
   document.getElementById('comp-2nd-n').textContent = p2 + ' bricks';
   document.getElementById('comp-3rd-n').textContent = (p3+p4+p5+p6plus) + ' bricks';
-  document.getElementById('comp-rival-n').textContent = rival ? `${rival[0]} (${rival[1]} bricks)` : '...';
+  document.getElementById('comp-rival-n').textContent = rival ? `${rival[0]} (${rival[1]} bricks)` : 'No identificado en el extract';
 
   const grid = document.getElementById('comp-kpi-grid');
   grid.innerHTML = `
