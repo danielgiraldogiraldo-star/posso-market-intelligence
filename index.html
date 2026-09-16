@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard POSSO · Éticos La Economía · MAT Jun 2026</title>
+<title>Dashboard POSSO V2 · Éticos La Economía · MAT Jun 2026</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
@@ -38,7 +38,7 @@
       <div class="header-subtitle">Análisis Estratégico de Participación de Mercado · Éticos La Economía</div>
     </div>
   </div>
-  <div class="header-badge">MAT JUN 2026</div>
+  <div class="header-badge">V2 · MAT JUN 2026</div>
 </div>
 
 <div class="tabs">
@@ -317,74 +317,52 @@
 </div>
 
 
-<!-- ===== COMPETIDORES ===== -->
+<!-- ===== COMPETIDORES V2 ===== -->
 <div id="tab-competidores" class="section">
-  <div class="section-title">⚔️ Ranking Competitivo por Brick</div>
+  <div class="section-title">⚔️ Competencia agregada por Brick <span id="comp-period-label" style="font-size:12px;font-weight:700;color:var(--gris-d)"></span></div>
   <div class="insight">
-    Análisis de las cadenas etiquetadas presentes en el canal Pharmacy Chains. Éticos lidera en <strong id="comp-lideres-n">...</strong> bricks, ocupa posición #2 en <strong id="comp-2nd-n">...</strong> y está en posición #3 o inferior en <strong id="comp-3rd-n">...</strong>. El principal competidor por número de bricks liderados es <strong id="comp-rival-n">...</strong>.
+    La fuente MAT Jun 2026 permite comparar <strong>Éticos La Economía frente al mercado agregado</strong> del canal Pharmacy Chains. No identifica individualmente Cruz Verde, La Rebaja, Farmatodo u otras cadenas. En esta V2, la “competencia” significa <strong>todo el mercado que no corresponde a Éticos</strong>.
+    <div id="comp-source-warning" style="margin-top:10px;background:rgba(255,234,0,.18);border:1px solid rgba(255,234,0,.55);border-radius:8px;padding:9px 11px;color:#FFF8C2;font-size:11px;line-height:1.45"></div>
   </div>
 
-  <!-- KPIs de posición -->
   <div class="kpi-grid" id="comp-kpi-grid" style="grid-template-columns:repeat(6,1fr);"></div>
 
-  <!-- Gráfica de liderazgo por cadena -->
   <div class="grid-2" style="margin-bottom:24px">
     <div class="card">
-      <div class="card-title">🏆 Bricks Liderados por Cadena</div>
-      <div class="chart-wrap"><canvas id="chartLideres"></canvas></div>
+      <div class="card-title">📊 Participación nacional: Éticos vs. competencia agregada</div>
+      <div class="chart-wrap"><canvas id="chartCompShare"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">📊 Market Share Total por Cadena (Pharmacy Chains)</div>
-      <div class="chart-wrap"><canvas id="chartMSCadenas"></canvas></div>
+      <div class="card-title">🗺️ Mercado agregado por departamento</div>
+      <div class="chart-wrap"><canvas id="chartCompState"></canvas></div>
     </div>
   </div>
 
-  <!-- Filtros -->
   <div class="filter-bar">
     <div class="filter-group"><label>Buscar Brick / Ciudad</label><input type="text" id="compSearch" placeholder="Ej: Barranquilla, 1101..." oninput="filterComp()"></div>
-    <div class="filter-group"><label>Posición Éticos</label>
-      <select id="compPosFilter" onchange="filterComp()">
+    <div class="filter-group"><label>Presencia Éticos</label>
+      <select id="compPresenceFilter" onchange="filterComp()">
         <option value="">Todas</option>
-        <option value="1">#1 Líder</option>
-        <option value="2">#2 Segundo</option>
-        <option value="3">#3 Tercero</option>
-        <option value="4+">#4 o inferior</option>
-        <option value="0">Sin presencia</option>
+        <option value="Con presencia Éticos">Con presencia</option>
+        <option value="Sin presencia Éticos">Sin presencia</option>
       </select>
     </div>
-    <div class="filter-group"><label>Líder del Brick</label>
-      <select id="compLiderFilter" onchange="filterComp()">
-        <option value="">Todas las cadenas</option>
-      </select>
+    <div class="filter-group"><label>Clasificación</label>
+      <select id="compClassFilter" onchange="filterComp()"><option value="">Todas</option></select>
     </div>
-    <div class="filter-group"><label>Departamento</label>
-      <select id="compStateFilter" onchange="filterComp()">
-        <option value="">Todos</option>
-      </select>
-    </div>
+    <div class="filter-group"><label>Departamento</label><select id="compStateFilter" onchange="filterComp()"><option value="">Todos</option></select></div>
+    <div class="filter-group"><label>Coordinador</label><select id="compCoordFilter" onchange="filterComp()"><option value="">Todos</option></select></div>
   </div>
 
-  <!-- Tabla de ranking -->
   <div class="card">
-    <div class="card-title">Ranking de Cadenas por Brick <span id="comp-count" style="font-size:11px;font-weight:400;color:var(--gris-d)"></span></div>
+    <div class="card-title">Competencia agregada por Brick <span id="comp-count" style="font-size:11px;font-weight:400;color:var(--gris-d)"></span></div>
     <div class="table-wrap">
       <table id="compTable">
-        <thead>
-          <tr>
-            <th>Brick</th>
-            <th>Ciudad</th>
-            <th>Depto</th>
-            <th>Mercado (PRECIS)</th>
-            <th>Pos. Éticos</th>
-            <th>MS Éticos</th>
-            <th>#1 Líder</th>
-            <th>MS Líder</th>
-            <th>#2</th>
-            <th>#3</th>
-            <th>Cadenas</th>
-            <th>Detalle</th>
-          </tr>
-        </thead>
+        <thead><tr>
+          <th>Brick</th><th>Ciudad</th><th>Depto</th><th>Mercado (PRECIS)</th>
+          <th>MS Éticos</th><th>MS competencia agregada</th><th>Presencia</th><th>Δ MS</th>
+          <th>Clasificación</th><th>Coordinador</th><th>Detalle</th>
+        </tr></thead>
         <tbody id="compTbody"></tbody>
       </table>
     </div>
@@ -403,7 +381,7 @@
   </div>
 </div>
 
-<div class="footer">Dashboard POSSO · Éticos La Economía · MAT Junio 2026 · Fuentes: CO_POSSO_ETICOS_202606_V1.twbx + DirectorioCierreJunio2026.xls · Canal Pharmacy Chains · Confidencial</div>
+<div class="footer">Dashboard POSSO V2 · Éticos La Economía · MAT Junio 2026 · Fuentes: CO_POSSO_ETICOS_202606_V1.twbx + DirectorioCierreJunio2026.xls · Competencia: agregado Éticos vs. mercado · Canal Pharmacy Chains · Confidencial</div>
 
 <script>
 // ============================================================
@@ -421,7 +399,6 @@ let DATA = {
   ]
 };
 let bPage=1, bPerPage=25, bFiltered=[];
-let COMP_DATA=null, compPage=1, compPerPage=30, compFiltered=[], compChartsBuilt=false;
 
 fetch('dashboard_data_v3.json').then(r=>r.json()).then(d=>{
   DATA={...DATA,...d};
@@ -648,18 +625,21 @@ function populateFilters(){
   const coords=[...new Set(DATA.bricks.map(b=>b.coordinador).filter(Boolean))].sort();
   const coSel=document.getElementById('filterCoord');
   coords.forEach(c=>{coSel.innerHTML+=`<option value="${c}">${c}</option>`;});
+  coSel.innerHTML+='<option value="__UNASSIGNED__">Sin asignar</option>';
 }
 
 function renderBricks(){
-  const text=document.getElementById('filterText').value.toLowerCase();
+  const text=document.getElementById('filterText').value.trim().toLowerCase();
   const cls=document.getElementById('filterCls').value;
   const state=document.getElementById('filterState').value;
   const coord=document.getElementById('filterCoord').value;
   bFiltered=DATA.bricks.filter(b=>{
-    if(text&&!b.brick.toLowerCase().includes(text)&&!b.city.toLowerCase().includes(text)) return false;
+    const haystack=[b.brick,b.city,b.state,b.coordinador,b.supervisor,String(b.brick_code)].map(v=>String(v||'').toLowerCase()).join(' ');
+    if(text&&!haystack.includes(text)) return false;
     if(cls&&b.clasificacion!==cls) return false;
     if(state&&b.state!==state) return false;
-    if(coord&&(!b.coordinador||!b.coordinador.includes(coord))) return false;
+    if(coord==='__UNASSIGNED__'&&b.coordinador) return false;
+    if(coord&&coord!=='__UNASSIGNED__'&&(!b.coordinador||!b.coordinador.includes(coord))) return false;
     return true;
   });
   bPage=1;
@@ -671,6 +651,9 @@ function renderBricksPage(){
   const page=bFiltered.slice(start,start+bPerPage);
   const tbody=document.getElementById('bricksBody');
   tbody.innerHTML='';
+  if(!page.length){
+    tbody.innerHTML='<tr><td colspan="12" style="padding:24px;text-align:center;color:var(--gris-d);font-weight:700">No hay bricks para los filtros seleccionados.</td></tr>';
+  }
   page.forEach(b=>{
     const hasD=b.droguerias&&b.droguerias.length>0;
     const dBtn=hasD?`<button class="btn-detail" onclick="openBrickModal('${b.brick.replace(/'/g,"\\'")}')">Ver ${b.num_drog}</button>`:`<span style="color:var(--gris-d)">—</span>`;
@@ -725,6 +708,11 @@ function openBrickModal(brickName){
   document.getElementById('modalOverlay').classList.add('open');
 }
 
+function openModal(title,content){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalContent').innerHTML=content;
+  document.getElementById('modalOverlay').classList.add('open');
+}
 function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
 
 // ── POSICIONAMIENTO ────────────────────────────────────────────────────────
@@ -737,6 +725,7 @@ let rView='ganadores';
 function loadRanking(){
   if(RANKING) return;
   fetch('ranking_data.json').then(r=>r.json()).then(data=>{
+    if(!data || !Array.isArray(data.droguerias)) throw new Error('ranking_data.json no contiene droguerias');
     RANKING=data;
     renderRankingSummary();
     // Poblar filtros
@@ -744,9 +733,13 @@ function loadRanking(){
     const states=[...new Set(data.droguerias.map(d=>d.state).filter(Boolean))].sort();
     const cSel=document.getElementById('rCoord');
     coords.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;cSel.appendChild(o);});
+    const unassigned=document.createElement('option');unassigned.value='__UNASSIGNED__';unassigned.textContent='Sin asignar';cSel.appendChild(unassigned);
     const sSel=document.getElementById('rState');
     states.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sSel.appendChild(o);});
     filterRanking();
+  }).catch(e=>{
+    console.error('Error cargando posicionamiento:',e);
+    document.getElementById('rankingBody').innerHTML='<tr><td colspan="11" style="padding:24px;text-align:center;color:var(--rojo);font-weight:700">Datos de posicionamiento no disponibles.</td></tr>';
   });
 }
 
@@ -792,14 +785,16 @@ function switchRView(v,el){
 
 function filterRanking(){
   if(!RANKING) return;
-  const text=(document.getElementById('rSearch')||{}).value?.toLowerCase()||'';
+  const text=((document.getElementById('rSearch')||{}).value||'').trim().toLowerCase();
   const coord=(document.getElementById('rCoord')||{}).value||'';
   const state=(document.getElementById('rState')||{}).value||'';
   rFiltered=RANKING.droguerias.filter(d=>{
     if(rView==='ganadores'&&d.tendencia!=='GANADOR') return false;
     if(rView==='perdedores'&&d.tendencia!=='PERDEDOR') return false;
-    if(text&&!d.nombre.toLowerCase().includes(text)&&!d.brick.toLowerCase().includes(text)&&!d.city.toLowerCase().includes(text)) return false;
-    if(coord&&d.coordinador!==coord) return false;
+    const haystack=[d.nombre,d.brick,d.city,d.state,d.coordinador,d.supervisor,String(d.brick_code)].map(v=>String(v||'').toLowerCase()).join(' ');
+    if(text&&!haystack.includes(text)) return false;
+    if(coord==='__UNASSIGNED__'&&d.coordinador) return false;
+    if(coord&&coord!=='__UNASSIGNED__'&&d.coordinador!==coord) return false;
     if(state&&d.state!==state) return false;
     return true;
   });
@@ -815,6 +810,9 @@ function renderRankingPage(){
   const page=rFiltered.slice(start,start+rPerPage);
   const tbody=document.getElementById('rankingBody');
   tbody.innerHTML='';
+  if(!page.length){
+    tbody.innerHTML='<tr><td colspan="11" style="padding:24px;text-align:center;color:var(--gris-d);font-weight:700">No hay droguerías para los filtros seleccionados.</td></tr>';
+  }
   page.forEach(d=>{
     const isGan=d.tendencia==='GANADOR';
     const arrow=isGan?'▲':'▼';
@@ -938,212 +936,150 @@ function clsPill(cls){
 }
 
 // ============================================================
-// COMPETIDORES
+// COMPETENCIA AGREGADA V2
 // ============================================================
-const CADENA_COLORS = {
-  'La Economía':    '#1C58B7',
-  'Cruz Verde':     '#16A34A',
-  'Farmatodo':      '#E1251B',
-  'La Rebaja':      '#EA580C',
-  'Alemana':        '#7C3AED',
-  'La Garantía':    '#0891B2',
-  'Colsubsidio':    '#DB2777',
-  'Cafam':          '#D97706',
-  'Olímpica':       '#059669',
-  'Farmanorte':     '#6366F1',
-  'Farmaya':        '#F59E0B',
-  'Comfandi':       '#10B981',
-  'Locatel':        '#8B5CF6',
-  'Drogas La Rebaja':'#EF4444',
-  'Otra Cadena':    '#9CA3AF',
-  'Otros':          '#D1D5DB',
-};
+let V2_COMP=null, compPage=1, compPerPage=30, compFiltered=[], compChartsBuilt=false;
 
-function posLabel(r){
-  if(!r) return '<span style="color:var(--gris-d)">—</span>';
-  const colors=['','var(--verde)','var(--azul)','var(--naranja)','var(--rojo)'];
-  const c = r<=4 ? colors[r] : 'var(--rojo)';
-  const medal = r===1?'🥇 ':r===2?'🥈 ':r===3?'🥉 ':'';
-  return `<span style="font-weight:800;color:${c}">${medal}#${r}</span>`;
+function fmtPrec(v){
+  const n=Number(v||0);
+  return n>=1000 ? (n/1000).toFixed(1)+'K' : n.toFixed(1);
 }
-
+function fmtPct(v){return Number(v||0).toFixed(2)+'%';}
+function compClassLabel(v){
+  const m={OPORTUNIDAD_ALTA:'Oportunidad Alta',OPORTUNIDAD_MEDIA:'Oportunidad Media',MANTENIMIENTO:'Mantenimiento',CRITICO:'Crítico',BAJO_IMPACTO:'Bajo Impacto'};
+  return m[v]||v||'Sin clasificar';
+}
+function presencePill(v){
+  return v==='Con presencia Éticos' ? '<span class="pill pill-mant">Con presencia</span>' : '<span class="pill pill-opp-alta">Sin presencia</span>';
+}
 function loadCompetidores(){
-  if(COMP_DATA){
+  if(V2_COMP){
     if(!compChartsBuilt) buildCompCharts();
+    renderCompTable();
     return;
   }
-  fetch('competidores_data.json').then(r=>r.json()).then(d=>{
-    COMP_DATA = d;
-    compFiltered = [...d.bricks];
+  document.getElementById('comp-kpi-grid').innerHTML='<div class="insight" style="grid-column:1/-1;margin:0">Cargando competencia agregada MAT Jun 2026…</div>';
+  fetch('competencia_agregada_v2.json').then(r=>{
+    if(!r.ok) throw new Error('No se encontró competencia_agregada_v2.json');
+    return r.json();
+  }).then(d=>{
+    if(!d || !Array.isArray(d.bricks) || !d.national) throw new Error('Dataset V2 incompleto');
+    V2_COMP=d;
+    compFiltered=[...d.bricks];
     buildCompKPIs();
     buildCompCharts();
     populateCompFilters();
     renderCompTable();
-  }).catch(e=>console.error('Error cargando competidores:',e));
+  }).catch(e=>{
+    console.error('Error cargando competencia agregada V2:',e);
+    document.getElementById('comp-kpi-grid').innerHTML='<div class="insight" style="grid-column:1/-1;margin:0;background:var(--rojo);color:white">No fue posible cargar la competencia agregada V2. Verifica que competencia_agregada_v2.json esté publicado junto con index.html.</div>';
+    document.getElementById('compTbody').innerHTML='<tr><td colspan="11" style="padding:24px;text-align:center;color:var(--rojo);font-weight:700">Datos de competencia agregada no disponibles.</td></tr>';
+  });
 }
-
 function buildCompKPIs(){
-  const d = COMP_DATA;
-  const pos = d.posicion_eticos || {};
-  const p1 = pos['#1']||0, p2=pos['#2']||0, p3=pos['#3']||0, p4=pos['#4']||0, p5=pos['#5']||0;
-  const p6plus = Object.entries(pos).filter(([k])=>k>='#6').reduce((s,[,v])=>s+v,0);
-  const sinPresencia = d.total_bricks - d.bricks_con_eticos;
-
-  // Actualizar insight
-  const rival = Object.entries(d.lideres_por_cadena||{}).filter(([k])=>k!=='La Economía').sort((a,b)=>b[1]-a[1])[0];
-  document.getElementById('comp-lideres-n').textContent = p1 + ' bricks';
-  document.getElementById('comp-2nd-n').textContent = p2 + ' bricks';
-  document.getElementById('comp-3rd-n').textContent = (p3+p4+p5+p6plus) + ' bricks';
-  document.getElementById('comp-rival-n').textContent = rival ? `${rival[0]} (${rival[1]} bricks)` : 'No identificado en el extract';
-
-  const grid = document.getElementById('comp-kpi-grid');
-  grid.innerHTML = `
-    <div class="kpi-card green"><div class="kpi-label">🥇 Líder (#1)</div><div class="kpi-value" style="color:var(--verde)">${p1}</div><div class="kpi-sub">bricks donde Éticos lidera</div></div>
-    <div class="kpi-card"><div class="kpi-label">🥈 Segundo (#2)</div><div class="kpi-value">${p2}</div><div class="kpi-sub">bricks en 2° posición</div></div>
-    <div class="kpi-card"><div class="kpi-label">🥉 Tercero (#3)</div><div class="kpi-value">${p3}</div><div class="kpi-sub">bricks en 3° posición</div></div>
-    <div class="kpi-card yellow"><div class="kpi-label">#4 – #5</div><div class="kpi-value" style="color:#D97706">${p4+p5}</div><div class="kpi-sub">bricks rezagados</div></div>
-    <div class="kpi-card red"><div class="kpi-label">#6 o inferior</div><div class="kpi-value" style="color:var(--rojo)">${p6plus}</div><div class="kpi-sub">bricks críticos</div></div>
-    <div class="kpi-card"><div class="kpi-label">Sin Presencia</div><div class="kpi-value" style="color:var(--gris-d)">${sinPresencia}</div><div class="kpi-sub">bricks sin Éticos</div></div>
-  `;
+  const d=V2_COMP, n=d.national;
+  document.getElementById('comp-period-label').textContent='· '+String(d.periodo||'').replace('MAT - ','MAT ');
+  document.getElementById('comp-source-warning').innerHTML='<strong>Alcance de la fuente:</strong> competencia agregada. La fuente identifica Éticos y el resto del mercado, pero no entrega la cadena individual de cada competidor. No se presenta ranking por cadena para evitar interpretaciones incorrectas.';
+  document.getElementById('comp-kpi-grid').innerHTML=`
+    <div class="kpi-card green"><div class="kpi-label">MS Éticos</div><div class="kpi-value" style="color:var(--verde)">${fmtPct(n.laeco_ms)}</div><div class="kpi-sub"><span class="badge-up">▲ +${Number(n.ms_delta||0).toFixed(2)} pp</span> vs. MAT Jun 2025</div></div>
+    <div class="kpi-card"><div class="kpi-label">MS competencia agregada</div><div class="kpi-value">${fmtPct(n.competition_ms)}</div><div class="kpi-sub">Resto del mercado Pharmacy Chains</div></div>
+    <div class="kpi-card"><div class="kpi-label">Bricks con presencia</div><div class="kpi-value">${d.active_bricks}</div><div class="kpi-sub">Éticos con MS mayor a 0%</div></div>
+    <div class="kpi-card red"><div class="kpi-label">Bricks sin presencia</div><div class="kpi-value" style="color:var(--rojo)">${d.no_presence_bricks}</div><div class="kpi-sub">Mercado agregado sin Éticos</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">Crecimiento Éticos</div><div class="kpi-value" style="color:#A96A00">+${Number(n.laeco_growth||0).toFixed(1)}%</div><div class="kpi-sub">vs. MAT Jun 2025</div></div>
+    <div class="kpi-card"><div class="kpi-label">Crecimiento mercado</div><div class="kpi-value">+${Number(n.market_growth||0).toFixed(1)}%</div><div class="kpi-sub">Pharmacy Chains</div></div>`;
 }
-
 function buildCompCharts(){
   if(compChartsBuilt) return;
-  compChartsBuilt = true;
-  const d = COMP_DATA;
-
-  // Chart 1: Bricks liderados por cadena
-  const lideres = Object.entries(d.lideres_por_cadena||{}).sort((a,b)=>b[1]-a[1]).slice(0,12);
-  const lColors = lideres.map(([k])=>CADENA_COLORS[k]||'#9CA3AF');
-  new Chart(document.getElementById('chartLideres'),{
-    type:'bar',
-    data:{labels:lideres.map(([k])=>k), datasets:[{data:lideres.map(([,v])=>v), backgroundColor:lColors, borderRadius:6}]},
-    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}, datalabels:{color:'white',font:{weight:'bold',size:11},formatter:v=>v}},
-      scales:{x:{grid:{color:'#F3F4F6'}}, y:{grid:{display:false}}}
-    }
-  });
-
-  // Chart 2: MS total por cadena
-  const cadenaMS = {};
-  d.bricks.forEach(b=>{
-    b.ranking.forEach(r=>{
-      cadenaMS[r.cadena] = (cadenaMS[r.cadena]||0) + r.precis;
-    });
-  });
-  const msEntries = Object.entries(cadenaMS).sort((a,b)=>b[1]-a[1]).slice(0,12);
-  const total = msEntries.reduce((s,[,v])=>s+v,0);
-  new Chart(document.getElementById('chartMSCadenas'),{
+  compChartsBuilt=true;
+  const n=V2_COMP.national;
+  new Chart(document.getElementById('chartCompShare'),{
     type:'doughnut',
-    data:{labels:msEntries.map(([k])=>k), datasets:[{data:msEntries.map(([,v])=>(v/total*100).toFixed(1)), backgroundColor:msEntries.map(([k])=>CADENA_COLORS[k]||'#9CA3AF')}]},
-    options:{responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{position:'right',labels:{font:{size:10},boxWidth:12}},
-        datalabels:{color:'white',font:{weight:'bold',size:10},formatter:(v,ctx)=>v>3?v+'%':''}}
-    }
+    data:{labels:['Éticos La Economía','Competencia agregada'],datasets:[{data:[n.laeco_ms,n.competition_ms],backgroundColor:['#1C58B7','#CBD5E1'],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}},datalabels:{color:'#18253A',font:{weight:'bold',size:13},formatter:v=>v.toFixed(2)+'%'}}},
+    plugins:[ChartDataLabels]
+  });
+  const byState={};
+  V2_COMP.bricks.forEach(b=>{
+    const state=b.state||'Sin departamento';
+    byState[state]=(byState[state]||0)+(Number(b.market_size)||0);
+  });
+  const top=Object.entries(byState).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  new Chart(document.getElementById('chartCompState'),{
+    type:'bar',data:{labels:top.map(([k])=>k),datasets:[{label:'Mercado agregado PRECIS',data:top.map(([,v])=>v/1000),backgroundColor:'#1C58B7',borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},datalabels:{color:'white',font:{weight:'bold',size:9},formatter:v=>v.toFixed(0)+'K',anchor:'center',align:'center'}},scales:{x:{beginAtZero:true,grid:{color:'#F3F4F6'},ticks:{callback:v=>v+'K'}},y:{grid:{display:false},ticks:{font:{size:9}}}}},
+    plugins:[ChartDataLabels]
   });
 }
-
 function populateCompFilters(){
-  if(!COMP_DATA) return;
-  // Lideres
-  const lideres = [...new Set(COMP_DATA.bricks.map(b=>b.lider))].sort();
-  const lSel = document.getElementById('compLiderFilter');
-  lideres.forEach(l=>{ const o=document.createElement('option'); o.value=l; o.textContent=l; lSel.appendChild(o); });
-  // Departamentos
-  const states = [...new Set(COMP_DATA.bricks.map(b=>b.state))].sort();
-  const sSel = document.getElementById('compStateFilter');
-  states.forEach(s=>{ const o=document.createElement('option'); o.value=s; o.textContent=s; sSel.appendChild(o); });
+  if(!V2_COMP) return;
+  const state=document.getElementById('compStateFilter'), coord=document.getElementById('compCoordFilter'), cls=document.getElementById('compClassFilter');
+  state.innerHTML='<option value="">Todos</option>'; coord.innerHTML='<option value="">Todos</option>'; cls.innerHTML='<option value="">Todas</option>';
+  [...new Set(V2_COMP.bricks.map(b=>b.state).filter(Boolean))].sort().forEach(v=>state.innerHTML+=`<option value="${v}">${v}</option>`);
+  [...new Set(V2_COMP.bricks.map(b=>b.coordinador).filter(Boolean))].sort().forEach(v=>coord.innerHTML+=`<option value="${v}">${v}</option>`);
+  [...new Set(V2_COMP.bricks.map(b=>b.clasificacion).filter(Boolean))].sort().forEach(v=>cls.innerHTML+=`<option value="${v}">${compClassLabel(v)}</option>`);
 }
-
 function filterComp(){
-  if(!COMP_DATA) return;
-  const search = document.getElementById('compSearch').value.toLowerCase();
-  const posF   = document.getElementById('compPosFilter').value;
-  const liderF = document.getElementById('compLiderFilter').value;
-  const stateF = document.getElementById('compStateFilter').value;
-
-  compFiltered = COMP_DATA.bricks.filter(b=>{
-    if(search && !b.brick.toLowerCase().includes(search) && !b.city.toLowerCase().includes(search)) return false;
-    if(stateF && b.state !== stateF) return false;
-    if(liderF && b.lider !== liderF) return false;
-    if(posF){
-      if(posF==='0' && b.eticos_rank !== null) return false;
-      if(posF==='0' && b.eticos_rank === null) return true;
-      if(posF==='4+' && (b.eticos_rank===null || b.eticos_rank < 4)) return false;
-      if(posF!=='4+' && posF!=='0' && b.eticos_rank !== parseInt(posF)) return false;
-    }
+  if(!V2_COMP) return;
+  const search=document.getElementById('compSearch').value.trim().toLowerCase();
+  const presence=document.getElementById('compPresenceFilter').value;
+  const cls=document.getElementById('compClassFilter').value;
+  const state=document.getElementById('compStateFilter').value;
+  const coord=document.getElementById('compCoordFilter').value;
+  compFiltered=V2_COMP.bricks.filter(b=>{
+    const hay=[b.brick,b.city,b.state,String(b.brick_code),b.coordinador,b.supervisor].map(v=>String(v||'').toLowerCase()).join(' ');
+    if(search&&!hay.includes(search)) return false;
+    if(presence&&b.presence!==presence) return false;
+    if(cls&&b.clasificacion!==cls) return false;
+    if(state&&b.state!==state) return false;
+    if(coord&&b.coordinador!==coord) return false;
     return true;
   });
-  compPage = 1;
-  renderCompTable();
+  compPage=1; renderCompTable();
 }
-
 function renderCompTable(){
-  if(!COMP_DATA) return;
-  const tbody = document.getElementById('compTbody');
-  const start = (compPage-1)*compPerPage;
-  const page  = compFiltered.slice(start, start+compPerPage);
-  document.getElementById('comp-count').textContent = `(${compFiltered.length} bricks)`;
-
-  tbody.innerHTML = page.map(b=>{
-    const r2 = b.ranking[1];
-    const r3 = b.ranking[2];
-    const posCell = posLabel(b.eticos_rank);
-    const msCell  = b.eticos_rank ? `<div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(b.eticos_ms,100)}%;background:#1C58B7"></div></div><span>${b.eticos_ms.toFixed(1)}%</span></div>` : '<span style="color:var(--gris-d)">—</span>';
-    const liderColor = CADENA_COLORS[b.lider]||'#9CA3AF';
+  if(!V2_COMP) return;
+  const tbody=document.getElementById('compTbody');
+  const page=compFiltered.slice((compPage-1)*compPerPage,compPage*compPerPage);
+  document.getElementById('comp-count').textContent=`(${compFiltered.length} bricks)`;
+  if(!page.length){
+    tbody.innerHTML='<tr><td colspan="11" style="padding:24px;text-align:center;color:var(--gris-d);font-weight:700">No hay bricks para los filtros seleccionados.</td></tr>';
+  } else tbody.innerHTML=page.map(b=>{
+    const msClass=b.laeco_ms>=3.02?'delta-pos':'delta-neg';
     return `<tr>
       <td style="font-size:10px;color:var(--gris-d)">${b.brick_code}</td>
       <td style="font-weight:700">${b.city}</td>
       <td style="font-size:11px">${b.state}</td>
-      <td style="font-size:11px">${(b.total_precis/1000).toFixed(0)}K</td>
-      <td style="text-align:center">${posCell}</td>
-      <td>${msCell}</td>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:10.5px;font-weight:700;background:${liderColor}22;color:${liderColor}">${b.lider}</span></td>
-      <td style="font-size:11px">${b.lider_ms.toFixed(1)}%</td>
-      <td style="font-size:11px;color:var(--gris-d)">${r2?r2.cadena:'—'}</td>
-      <td style="font-size:11px;color:var(--gris-d)">${r3?r3.cadena:'—'}</td>
-      <td style="text-align:center">${b.n_cadenas}</td>
+      <td style="font-size:11px">${fmtPrec(b.market_size)}</td>
+      <td><div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(b.laeco_ms,100)}%;background:#1C58B7"></div></div><span class="${msClass}">${fmtPct(b.laeco_ms)}</span></div></td>
+      <td><div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(b.competition_ms,100)}%;background:#94A3B8"></div></div><span>${fmtPct(b.competition_ms)}</span></div></td>
+      <td>${presencePill(b.presence)}</td>
+      <td class="${Number(b.ms_delta||0)>=0?'delta-pos':'delta-neg'}">${Number(b.ms_delta||0)>=0?'+':''}${Number(b.ms_delta||0).toFixed(2)} pp</td>
+      <td>${clsPill(b.clasificacion)}</td>
+      <td style="font-size:10px">${b.coordinador||'Sin asignar'}</td>
       <td><button class="btn-detail" onclick="showCompDetail(${b.brick_code})">Ver</button></td>
     </tr>`;
   }).join('');
-
-  // Paginación
-  const totalPages = Math.ceil(compFiltered.length/compPerPage);
-  const pag = document.getElementById('compPag');
-  pag.innerHTML = '';
+  const totalPages=Math.ceil(compFiltered.length/compPerPage), pag=document.getElementById('compPag'); pag.innerHTML='';
   if(totalPages<=1) return;
-  const addBtn=(label,page,active)=>{ const b=document.createElement('button'); b.textContent=label; if(active)b.classList.add('active'); b.onclick=()=>{compPage=page;renderCompTable();}; pag.appendChild(b); };
-  if(compPage>1) addBtn('←',compPage-1,false);
-  for(let i=Math.max(1,compPage-2);i<=Math.min(totalPages,compPage+2);i++) addBtn(i,i,i===compPage);
-  if(compPage<totalPages) addBtn('→',compPage+1,false);
+  const add=(label,p,active)=>{const btn=document.createElement('button');btn.textContent=label;if(active)btn.classList.add('active');btn.onclick=()=>{compPage=p;renderCompTable()};pag.appendChild(btn)};
+  if(compPage>1)add('←',compPage-1,false);
+  for(let i=Math.max(1,compPage-2);i<=Math.min(totalPages,compPage+2);i++)add(i,i,i===compPage);
+  if(compPage<totalPages)add('→',compPage+1,false);
 }
-
 function showCompDetail(brickCode){
-  if(!COMP_DATA) return;
-  const b = COMP_DATA.bricks.find(x=>x.brick_code===brickCode);
-  if(!b) return;
-  const rows = b.ranking.map((r,i)=>{
-    const isEticos = r.cadena==='La Economía';
-    const color = CADENA_COLORS[r.cadena]||'#9CA3AF';
-    const bg = isEticos ? 'background:var(--azul-l);font-weight:800;' : '';
-    return `<tr style="${bg}">
-      <td style="text-align:center;font-weight:800">${posLabel(r.rank)}</td>
-      <td><span style="display:inline-block;padding:2px 8px;border-radius:8px;font-size:11px;font-weight:700;background:${color}22;color:${color}">${r.cadena}</span></td>
-      <td style="font-size:11px">${(r.precis/1000).toFixed(1)}K</td>
-      <td><div class="ms-bar"><div class="ms-bar-bg"><div class="ms-bar-fill" style="width:${Math.min(r.ms_pct,100)}%;background:${color}"></div></div><span style="font-size:11px">${r.ms_pct.toFixed(1)}%</span></div></td>
-    </tr>`;
-  }).join('');
-
-  openModal(
-    `⚔️ ${b.city} — Brick ${b.brick_code}`,
-    `<div style="margin-bottom:12px;font-size:12px;color:var(--gris-d)">${b.state} · ${b.region} · Mercado: ${(b.total_precis/1000).toFixed(0)}K PRECIS · ${b.n_cadenas} cadenas presentes</div>
-    <table style="width:100%">
-      <thead><tr><th>Pos.</th><th>Cadena</th><th>PRECIS</th><th>Market Share</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`
-  );
+  if(!V2_COMP) return;
+  const b=V2_COMP.bricks.find(x=>x.brick_code===brickCode); if(!b) return;
+  openModal(`⚔️ ${b.city} — Brick ${b.brick_code}`,`
+    <div style="margin-bottom:12px;font-size:12px;color:var(--gris-d)">${b.state} · ${b.region||'Sin región'} · Mercado: ${fmtPrec(b.market_size)} PRECIS · ${b.periodo||V2_COMP.periodo}</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+      <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:var(--azul)">${fmtPct(b.laeco_ms)}</div><div style="font-size:10px;color:var(--gris-d)">MS Éticos</div></div>
+      <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:#64748B">${fmtPct(b.competition_ms)}</div><div style="font-size:10px;color:var(--gris-d)">Competencia agregada</div></div>
+      <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:${Number(b.ms_delta||0)>=0?'var(--verde)':'var(--rojo)'}">${Number(b.ms_delta||0)>=0?'+':''}${Number(b.ms_delta||0).toFixed(2)} pp</div><div style="font-size:10px;color:var(--gris-d)">Δ MS</div></div>
+      <div style="text-align:center"><div style="font-size:22px;font-weight:900;color:var(--azul)">${b.num_drog||0}</div><div style="font-size:10px;color:var(--gris-d)">Droguerías</div></div>
+    </div>
+    <div style="background:var(--amarillo-l);border:1px solid #F2DD69;border-radius:9px;padding:11px;font-size:11px;line-height:1.5;margin-bottom:14px"><strong>Lectura de la fuente:</strong> el ${fmtPct(b.competition_ms)} corresponde al mercado agregado que no es Éticos. Este archivo no permite identificar qué porcentaje corresponde a cada cadena competidora.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px"><div><strong>Presencia:</strong> ${b.presence}</div><div><strong>Clasificación:</strong> ${clsPill(b.clasificacion)}</div><div><strong>Coordinador:</strong> ${b.coordinador||'Sin asignar'}</div><div><strong>Supervisor:</strong> ${b.supervisor||'Sin asignar'}</div></div>`);
 }
-
 </script>
 
 <!-- Modal Zoom Mapas -->
